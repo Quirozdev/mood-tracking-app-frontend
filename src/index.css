@@ -1,0 +1,175 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "RedditSans";
+  font-style: normal;
+  font-weight: 400;
+  src: url(./assets/fonts/RedditSans-Regular.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "RedditSans";
+  font-style: normal;
+  font-weight: 500;
+  src: url(./assets/fonts/RedditSans-Medium.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "RedditSans";
+  font-style: normal;
+  font-weight: 600;
+  src: url(./assets/fonts/RedditSans-SemiBold.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "RedditSans";
+  font-style: normal;
+  font-weight: 700;
+  src: url(./assets/fonts/RedditSans-Bold.ttf) format("truetype");
+}
+
+@font-face {
+  font-family: "RedditSans";
+  font-style: italic;
+  font-weight: 500;
+  src: url(./assets/fonts/RedditSans-MediumItalic.ttf) format("truetype");
+}
+
+@theme {
+  /* Colors */
+  --color-background: #ffffff;
+
+  --color-neutral-0: #ffffff;
+  --color-neutral-200: #cbcdd0;
+  --color-neutral-300: #9393b7;
+  --color-neutral-600: #57577b;
+  --color-neutral-900: #21214d;
+
+  --color-blue-100: #e0e6fa;
+  --color-blue-200: #c7d3f7;
+  --color-blue-300: #89caff;
+  --color-blue-600: #4865db;
+  --color-blue-700: #2a4cd5;
+
+  --color-red-300: #ff9b99;
+  --color-red-700: #e60013;
+
+  --color-indigo-200: #b8b1ff;
+
+  --color-green-300: #89e780;
+
+  --color-amber-300: #ffc97c;
+
+  --background-image-light-gradient: linear-gradient(
+    180deg,
+    #f5f5ff 72.99%,
+    #e0e0ff 100%
+  );
+
+  /* Typography */
+  --default-font-family: "RedditSans", sans-serif;
+
+  --text-preset-1: 52px;
+  --text-preset-1--line-height: 140%;
+  --text-preset-1--letter-spacing: -2px;
+  --text-preset-1--font-weight: bold;
+
+  --text-preset-1-mobile: 46px;
+  --text-preset-1-mobile--line-height: 120%;
+  --text-preset-1-mobile--letter-spacing: -2px;
+  --text-preset-1-mobile--font-weight: bold;
+
+  --text-preset-2: 40px;
+  --text-preset-2--line-height: 120%;
+  --text-preset-2--letter-spacing: -0.3px;
+  --text-preset-2--font-weight: bold;
+
+  --text-preset-2-mobile: 32px;
+  --text-preset-2-mobile--line-height: 120%;
+  --text-preset-2-mobile--letter-spacing: -0.3px;
+  --text-preset-2-mobile--font-weight: bold;
+
+  --text-preset-3: 32px;
+  --text-preset-3--line-height: 140%;
+  --text-preset-3--letter-spacing: -0.3px;
+  --text-preset-3--font-weight: bold;
+
+  --text-preset-3-mobile: 28px;
+  --text-preset-3-mobile--line-height: 130%;
+  --text-preset-3-mobile--letter-spacing: -0.3px;
+  --text-preset-3-mobile--font-weight: bold;
+
+  --text-preset-4: 24px;
+  --text-preset-4--line-height: 140%;
+  --text-preset-4--letter-spacing: 0px;
+  --text-preset-4--font-weight: 600;
+
+  --text-preset-4-regular: 24px;
+  --text-preset-4-regular--line-height: 140%;
+  --text-preset-4-regular--letter-spacing: 0px;
+  --text-preset-4-regular--font-weight: 400;
+
+  --text-preset-5: 20px;
+  --text-preset-5--line-height: 140%;
+  --text-preset-5--letter-spacing: 0px;
+  --text-preset-5--font-weight: 600;
+
+  --text-preset-6: 18px;
+  --text-preset-6--line-height: 120%;
+  --text-preset-6--letter-spacing: 0px;
+  --text-preset-6--font-weight: 500;
+
+  --text-preset-6-italic: 18px;
+  --text-preset-6-italic--line-height: 130%;
+  --text-preset-6-italic--letter-spacing: 0px;
+  --text-preset-6-italic--font-weight: 500;
+
+  --text-preset-6-regular: 18px;
+  --text-preset-6-regular--line-height: 140%;
+  --text-preset-6-regular--letter-spacing: -0.3px;
+  --text-preset-6-regular--font-weight: 400;
+
+  --text-preset-7: 15px;
+  --text-preset-7--line-height: 140%;
+  --text-preset-7--letter-spacing: -0.3px;
+  --text-preset-7--font-weight: 400;
+
+  --text-preset-8: 13px;
+  --text-preset-8--line-height: 100%;
+  --text-preset-8--letter-spacing: 0px;
+  --text-preset-8--font-weight: 600;
+
+  --text-preset-9: 12px;
+  --text-preset-9--line-height: 110%;
+  --text-preset-9--letter-spacing: 0px;
+  --text-preset-9--font-weight: 400;
+
+  /* Spacing */
+  --spacing-0: 0px;
+  --spacing-025: 2px;
+  --spacing-050: 4px;
+  --spacing-075: 6px;
+  --spacing-100: 8px;
+  --spacing-125: 10px;
+  --spacing-150: 12px;
+  --spacing-200: 16px;
+  --spacing-250: 20px;
+  --spacing-300: 24px;
+  --spacing-400: 32px;
+  --spacing-500: 40px;
+  --spacing-600: 48px;
+  --spacing-800: 64px;
+  --spacing-1000: 80px;
+
+  /* Border radius */
+  --radius-0: 0;
+  --radius-4: 4px;
+  --radius-6: 6px;
+  --radius-8: 8px;
+  --radius-10: 10px;
+  --radius-12: 12px;
+  --radius-16: 16px;
+  --radius-20: 20px;
+  --radius-24: 24px;
+  --radius-full: 999px;
+}
