@@ -1,12 +1,15 @@
 import { AuthFormContainer } from "@/features/auth/components/AuthFormContainer";
 import { Avatar } from "@/shared/components/Avatar";
-import { Button } from "@/shared/components/Button";
+import { FilePicker } from "@/shared/components/FilePicker";
 import { Input } from "@/shared/components/Input";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 export function OnboardingPage() {
-  const inputFileRef = useRef<HTMLInputElement>(null);
-  const [src, setSrc] = useState<string | null>(null);
+  const [files, setFiles] = useState<FileList | null>(null);
+
+  const maxFileSize = 250 * 1024;
+
+  const src = files && files.length > 0 ? URL.createObjectURL(files[0]) : null;
 
   return (
     <AuthFormContainer
@@ -40,31 +43,15 @@ export function OnboardingPage() {
                 Max 250KB, PNG or JPEG
               </span>
             </div>
-            <Button
-              type="button"
-              variant="secondary"
-              className="w-fit"
-              onClick={() => {
-                inputFileRef.current?.click();
+            <FilePicker
+              setSelectedFiles={setFiles}
+              maxFileSize={maxFileSize}
+              onHigherMaxFileSizeReached={(size) => {
+                console.log(
+                  `File size is ${size * 1024}KB which is larger than allowed limit (${maxFileSize}KB)`,
+                );
               }}
-            >
-              Upload
-            </Button>
-            <input
-              type="file"
               accept="image/pmg,image/jpeg"
-              className="hidden"
-              ref={inputFileRef}
-              onChange={(e) => {
-                console.log(e);
-                const files = e.target.files;
-                console.log(files);
-                if (files) {
-                  const url = URL.createObjectURL(files[0]);
-                  console.log(url);
-                  setSrc(url);
-                }
-              }}
             />
           </div>
         </div>
