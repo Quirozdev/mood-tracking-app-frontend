@@ -4,7 +4,10 @@ import { Link } from "react-router";
 interface Props extends React.ComponentPropsWithRef<"form"> {
   title: string;
   subtitle: string;
-  buttonText: string;
+  button: {
+    text: string;
+    isLoading: boolean;
+  };
   redirection?: {
     text: string;
     linkTo: string;
@@ -16,7 +19,7 @@ export function AuthFormContainer({
   children,
   title,
   subtitle,
-  buttonText,
+  button,
   redirection,
   ...props
 }: Props) {
@@ -31,7 +34,20 @@ export function AuthFormContainer({
       </div>
       {children}
       <div className="flex flex-col gap-5">
-        <Button type="submit">{buttonText}</Button>
+        <Button
+          type="submit"
+          disabled={button.isLoading}
+          className="flex justify-center text-center"
+        >
+          {button.isLoading ? (
+            <>
+              <span className="border-neutral-0 block h-6 w-6 animate-spin rounded-full border-t-2"></span>
+              <span className="invisible">s</span>
+            </>
+          ) : (
+            <span>{button.text}</span>
+          )}
+        </Button>
         {redirection && (
           <p className="text-preset-6-regular text-center text-neutral-600">
             {redirection.text}{" "}

@@ -6,7 +6,10 @@ export function SignInPage() {
     <AuthFormContainer
       title="Welcome back!"
       subtitle="Log in to continue tracking your mood and sleep"
-      buttonText="Log In"
+      button={{
+        text: "Log In",
+        isLoading: false,
+      }}
       redirection={{
         text: "Haven't got an account?",
         linkText: "Sign up.",
