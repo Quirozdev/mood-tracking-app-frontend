@@ -4,7 +4,6 @@ import { signInSchema } from "@/features/auth/schemas/sign-in-schema";
 import { showToast } from "@/features/toast/lib/toast";
 import { Input } from "@/shared/components/Input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { AxiosError } from "axios";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import * as z from "zod";
