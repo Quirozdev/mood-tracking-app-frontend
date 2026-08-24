@@ -4,13 +4,10 @@ import { useCreateUser } from "@/features/users/hooks/use-create-user";
 import { Input } from "@/shared/components/Input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
 import * as z from "zod";
-import HappyFaceIcon from "@/assets/images/icon-happy-color.svg";
-import SadFaceIcon from "@/assets/images/icon-sad-color.svg";
 import { AxiosError } from "axios";
 import { useNavigate } from "react-router";
-import { ToastIcon } from "@/shared/components/ToastIcon";
+import { showToast } from "@/features/toast/lib/toast";
 
 export function SignUpPage() {
   const {
@@ -37,15 +34,10 @@ export function SignUpPage() {
         email: data.email,
         password: data.password,
       });
-      toast.success("Account created successfully, please log in", {
-        icon: <ToastIcon src={HappyFaceIcon} alt="Happy face" />,
-      });
+      showToast("success", "Account created successfully, please log in");
       navigate("/auth/login");
     } catch (error) {
       if (error instanceof AxiosError) {
-        toast.error(error?.response?.data?.message, {
-          icon: <ToastIcon src={SadFaceIcon} alt="Sad face" />,
-        });
         if (error?.response?.status === 409) {
           setError("email", {
             message: "Email already taken",
@@ -53,9 +45,6 @@ export function SignUpPage() {
         }
         return;
       }
-      toast.error("An unexpected error occured, please try again later", {
-        icon: <ToastIcon src={SadFaceIcon} alt="Sad face" />,
-      });
     }
   }
 

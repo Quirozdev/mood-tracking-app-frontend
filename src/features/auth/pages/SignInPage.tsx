@@ -1,7 +1,42 @@
 import { AuthFormContainer } from "@/features/auth/components/AuthFormContainer";
+import { useSignIn } from "@/features/auth/hooks/use-sign-in";
+import { signInSchema } from "@/features/auth/schemas/sign-in-schema";
+import { showToast } from "@/features/toast/lib/toast";
 import { Input } from "@/shared/components/Input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AxiosError } from "axios";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
+import * as z from "zod";
 
 export function SignInPage() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof signInSchema>>({
+    resolver: zodResolver(signInSchema),
+    mode: "onBlur",
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const navigate = useNavigate();
+
+  const { mutateAsync: signIn, isPending } = useSignIn();
+
+  async function onSubmit(data: z.infer<typeof signInSchema>) {
+    const { accessToken, refreshToken } = await signIn({
+      email: data.email,
+      password: data.password,
+    });
+
+    showToast("success", "Logged in successfully");
+    console.log(accessToken, refreshToken);
+  }
+
   return (
     <AuthFormContainer
       title="Welcome back!"
@@ -15,6 +50,7 @@ export function SignInPage() {
         linkText: "Sign up.",
         linkTo: "/auth/register",
       }}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col gap-5">
         <div className="flex flex-col gap-2">
@@ -25,10 +61,13 @@ export function SignInPage() {
             Email address
           </label>
           <Input
+            {...register("email")}
             type="text"
             id="email"
             name="email"
             placeholder="name@email.com"
+            invalid={!!errors.email}
+            errorMessage={errors.email?.message}
           />
         </div>
         <div className="flex flex-col gap-2">
@@ -38,7 +77,14 @@ export function SignInPage() {
           >
             Password
           </label>
-          <Input type="password" id="password" name="password" />
+          <Input
+            {...register("password")}
+            type="password"
+            id="password"
+            name="password"
+            invalid={!!errors.password}
+            errorMessage={errors.password?.message}
+          />
         </div>
       </div>
     </AuthFormContainer>
