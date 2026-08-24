@@ -5,7 +5,7 @@ import { Input } from "@/shared/components/Input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { AxiosError } from "axios";
+import axios from "axios";
 import { useNavigate } from "react-router";
 import { showToast } from "@/features/toast/lib/toast";
 
@@ -37,7 +37,7 @@ export function SignUpPage() {
       showToast("success", "Account created successfully, please log in");
       navigate("/auth/login");
     } catch (error) {
-      if (error instanceof AxiosError) {
+      if (axios.isAxiosError(error)) {
         if (error?.response?.status === 409) {
           setError("email", {
             message: "Email already taken",

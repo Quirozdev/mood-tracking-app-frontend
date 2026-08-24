@@ -1,4 +1,4 @@
-import { handleApiError } from "@/api/error-handler";
+import { handleApiError } from "@/api/api-error-handler";
 import { MutationCache, QueryCache, QueryClient } from "@tanstack/react-query";
 
 export const queryClient = new QueryClient({
