@@ -15,7 +15,10 @@ export function OnboardingPage() {
     <AuthFormContainer
       title="Personalize your experience"
       subtitle="Add your name and a profile picture to make Mood yours."
-      buttonText="Start Tracking"
+      button={{
+        text: "Start Tracking",
+        isLoading: false,
+      }}
     >
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
