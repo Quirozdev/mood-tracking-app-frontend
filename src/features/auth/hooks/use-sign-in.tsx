@@ -1,5 +1,5 @@
 import { signIn } from "@/features/auth/services/sign-in";
-import type { LoginInput } from "@/features/auth/types/auth.types";
+import type { LoginInput } from "@/features/auth/model/auth.types";
 import { useMutation } from "@tanstack/react-query";
 
 export function useSignIn() {

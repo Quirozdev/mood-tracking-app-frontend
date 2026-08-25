@@ -4,9 +4,10 @@ import App from "@/App";
 import { authRoutes } from "@/features/auth/routes";
 
 export const router = createBrowserRouter([
+  ...authRoutes,
   {
     path: "/",
     element: <AppLayout />,
-    children: [{ index: true, element: <App /> }, ...authRoutes],
+    children: [{ index: true, element: <App /> }],
   },
 ]);

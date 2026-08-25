@@ -3,6 +3,7 @@ import { useSignIn } from "@/features/auth/hooks/use-sign-in";
 import { signInSchema } from "@/features/auth/schemas/sign-in-schema";
 import { showToast } from "@/features/toast/lib/toast";
 import { Input } from "@/shared/components/Input";
+import { setItem } from "@/shared/lib/local-storage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
@@ -27,13 +28,14 @@ export function SignInPage() {
   const { mutateAsync: signIn, isPending } = useSignIn();
 
   async function onSubmit(data: z.infer<typeof signInSchema>) {
-    const { accessToken, refreshToken } = await signIn({
+    const { accessToken } = await signIn({
       email: data.email,
       password: data.password,
     });
 
+    setItem("accessToken", accessToken);
     showToast("success", "Logged in successfully");
-    console.log(accessToken, refreshToken);
+    navigate("/", { replace: true });
   }
 
   return (
@@ -42,7 +44,7 @@ export function SignInPage() {
       subtitle="Log in to continue tracking your mood and sleep"
       button={{
         text: "Log In",
-        isLoading: false,
+        isLoading: isPending,
       }}
       redirection={{
         text: "Haven't got an account?",

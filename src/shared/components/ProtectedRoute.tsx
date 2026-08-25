@@ -1,7 +1,7 @@
 import { useGetMe } from "@/features/auth/hooks/use-get-me";
 import { Outlet, useNavigate } from "react-router";
 
-export default function AppLayout() {
+export function ProtectedRoute() {
   const navigate = useNavigate();
   const { data: user, isLoading } = useGetMe();
 
