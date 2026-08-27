@@ -1,7 +1,7 @@
 import { useGetMe } from "@/features/auth/hooks/use-get-me";
 import { Navigate, Outlet } from "react-router";
 
-export default function AppLayout() {
+export default function RequireAuth() {
   const { data: user, isLoading } = useGetMe();
 
   if (isLoading) {
@@ -10,10 +10,6 @@ export default function AppLayout() {
 
   if (!user) {
     return <Navigate to="/auth/login" replace />;
-  }
-
-  if (!user.name) {
-    return <Navigate to="/auth/onboarding" replace />;
   }
 
   return <Outlet />;

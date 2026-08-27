@@ -11,7 +11,7 @@ export function Button({ children, className, ...props }: Props) {
     <button
       className={clsx(
         className,
-        "cursor-pointer focus:shadow-[0px_0px_0px_3px_var(--color-neutral-0),0px_0px_0px_5px_var(--color-blue-600)] disabled:bg-blue-200",
+        "not-disabled:cursor-pointer focus:shadow-[0px_0px_0px_3px_var(--color-neutral-0),0px_0px_0px_5px_var(--color-blue-600)] disabled:bg-blue-200",
         variant === "primary" &&
           "text-preset-5 text-neutral-0 rounded-10 bg-blue-600 px-8 py-3 hover:bg-blue-700",
         variant === "secondary" &&

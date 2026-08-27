@@ -1,15 +1,94 @@
 import { AuthFormContainer } from "@/features/auth/components/AuthFormContainer";
+import { GET_ME_QUERY_KEY, useGetMe } from "@/features/auth/hooks/use-get-me";
+import { onboardingSchema } from "@/features/auth/schemas/onboarding-schema";
+import { showToast } from "@/features/toast/lib/toast";
+import { useUpdateUser } from "@/features/users/hooks/use-update-user";
+import { useUploadAvatar } from "@/features/users/hooks/use-upload-avatar";
+import type { User } from "@/features/users/model/user.types";
 import { Avatar } from "@/shared/components/Avatar";
 import { FilePicker } from "@/shared/components/FilePicker";
 import { Input } from "@/shared/components/Input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
+import * as z from "zod";
 
 export function OnboardingPage() {
+  const { data: user, isLoading: isLoadingUser } = useGetMe();
   const [files, setFiles] = useState<FileList | null>(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<z.infer<typeof onboardingSchema>>({
+    resolver: zodResolver(onboardingSchema),
+    mode: "onBlur",
+    defaultValues: {
+      name: "",
+    },
+  });
+
+  const { mutateAsync: updateUser, isPending: isUpdatingUser } =
+    useUpdateUser();
+
+  const { mutateAsync: uploadAvatar, isPending: isUploadingAvatar } =
+    useUploadAvatar();
+
+  const queryClient = useQueryClient();
+
+  const navigate = useNavigate();
 
   const maxFileSize = 250 * 1024;
-
   const src = files && files.length > 0 ? URL.createObjectURL(files[0]) : null;
+
+  async function onSubmit(data: z.infer<typeof onboardingSchema>) {
+    const [userUpdateResult, avatarUploadResult] = await Promise.allSettled([
+      updateUser({
+        id: user?.id as string,
+        updateUserInput: {
+          name: data.name,
+        },
+      }),
+      files?.[0]
+        ? uploadAvatar({
+            id: user?.id as string,
+            file: files[0],
+          })
+        : Promise.resolve(null),
+    ]);
+
+    let newName = user?.name || null;
+    let newAvatarUrl = user?.avatarUrl || null;
+
+    if (userUpdateResult.status === "fulfilled") {
+      showToast("success", "Name updated successfully!");
+      newName = userUpdateResult.value?.name;
+    }
+
+    if (
+      avatarUploadResult.status === "fulfilled" &&
+      avatarUploadResult.value !== null
+    ) {
+      showToast("success", "Avatar updated successfully!");
+      newAvatarUrl = avatarUploadResult.value.avatarUrl;
+    }
+
+    queryClient.setQueryData<User>([GET_ME_QUERY_KEY], (currentUser) => {
+      if (!currentUser) return currentUser;
+
+      return {
+        ...currentUser,
+        name: newName,
+        avatarUrl: newAvatarUrl,
+      };
+    });
+
+    if (userUpdateResult.status === "fulfilled") {
+      navigate("/");
+    }
+  }
 
   return (
     <AuthFormContainer
@@ -17,8 +96,9 @@ export function OnboardingPage() {
       subtitle="Add your name and a profile picture to make Mood yours."
       button={{
         text: "Start Tracking",
-        isLoading: false,
+        isLoading: isLoadingUser || isUpdatingUser || isUploadingAvatar,
       }}
+      onSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col gap-6">
         <div className="flex flex-col gap-2">
@@ -29,10 +109,13 @@ export function OnboardingPage() {
             Name
           </label>
           <Input
+            {...register("name")}
             type="text"
             id="name"
             name="name"
             placeholder="Jane Appleseed"
+            invalid={!!errors.name}
+            errorMessage={errors.name?.message}
           />
         </div>
         <div className="flex gap-5">
@@ -49,12 +132,7 @@ export function OnboardingPage() {
             <FilePicker
               setSelectedFiles={setFiles}
               maxFileSize={maxFileSize}
-              onHigherMaxFileSizeReached={(size) => {
-                console.log(
-                  `File size is ${size * 1024}KB which is larger than allowed limit (${maxFileSize}KB)`,
-                );
-              }}
-              accept="image/pmg,image/jpeg"
+              accept="image/png,image/jpeg"
             />
           </div>
         </div>

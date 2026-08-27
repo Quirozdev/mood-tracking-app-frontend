@@ -46,7 +46,7 @@ api.interceptors.response.use(
     const status = error?.response?.status;
     const originalRequestConfig = error.config!;
 
-    if (status !== 401) {
+    if (status !== 401 || originalRequestConfig.url === "/auth/login") {
       return Promise.reject(error);
     }
 
