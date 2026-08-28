@@ -16,5 +16,9 @@ export default function AppLayout() {
     return <Navigate to="/auth/onboarding" replace />;
   }
 
-  return <Outlet />;
+  return (
+    <div className="bg-light-gradient min-h-screen w-full">
+      <Outlet />
+    </div>
+  );
 }
