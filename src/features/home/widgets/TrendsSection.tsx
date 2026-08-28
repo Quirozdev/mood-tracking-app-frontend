@@ -1,19 +1,90 @@
 import clsx from "clsx";
-import type React from "react";
+import { TrendYAxisElement } from "@/features/home/components/TrendYAxisElement";
+import { TrendXAxisElement } from "@/features/home/components/TrendXAxisElement";
+import { useEffect, useRef, useState } from "react";
 
 interface Props extends React.ComponentPropsWithRef<"section"> {}
 
 export function TrendsSection({ className }: Props) {
+  const yFirstAxisElementRef = useRef<HTMLDivElement>(null);
+  const ySecondAxisElementRef = useRef<HTMLDivElement>(null);
+
+  const [separation, setSeparation] = useState<number>(0);
+
+  useEffect(() => {
+    setSeparation(calculateSeparationFromYAxisElements());
+  }, [yFirstAxisElementRef, ySecondAxisElementRef]);
+
+  // so i can dinamycally put x axis labels at exact position and to fill each bar dynamically with correct heights instead of hardcoded ones
+  function calculateSeparationFromYAxisElements() {
+    return (
+      (ySecondAxisElementRef.current?.offsetTop || 0) -
+      (yFirstAxisElementRef.current?.offsetTop || 0)
+    );
+  }
+
   return (
     <section
       className={clsx(
-        "bg-neutral-0 border-box rounded-16 border border-blue-100 px-4 py-5 md:px-5 md:py-8 xl:px-8",
+        "bg-neutral-0 rounded-16 box-border flex flex-col gap-y-8 border border-blue-100 px-4 py-5 md:px-5 md:py-8 xl:px-8",
         className,
       )}
     >
       <span className="text-preset-3-mobile md:text-preset-3 text-neutral-900">
         Mood and sleep trends
       </span>
+
+      <div className="flex gap-x-4">
+        <div className="flex flex-col gap-y-10">
+          <TrendYAxisElement text="9+ hours" ref={yFirstAxisElementRef} />
+          <TrendYAxisElement text="7-8 hours" ref={ySecondAxisElementRef} />
+          <TrendYAxisElement text="5-6 hours" />
+          <TrendYAxisElement text="3-4 hours" />
+          <TrendYAxisElement text="0-2 hours" />
+        </div>
+        <div className="scrollbar-thin flex items-end gap-x-4 self-end overflow-x-auto xl:gap-x-4.5">
+          <TrendXAxisElement
+            mood="very_happy"
+            sleepHours="9"
+            heightPerYValue={separation}
+          />
+          <TrendXAxisElement
+            mood="happy"
+            sleepHours="3-4_hours"
+            heightPerYValue={separation}
+          />
+          <TrendXAxisElement
+            mood="neutral"
+            sleepHours="5-6_hours"
+            heightPerYValue={separation}
+          />
+          <TrendXAxisElement
+            mood="sad"
+            sleepHours="7-8_hours"
+            heightPerYValue={separation}
+          />
+          <TrendXAxisElement
+            mood="very_sad"
+            sleepHours="0-2_hours"
+            heightPerYValue={separation}
+          />
+          <TrendXAxisElement
+            mood="neutral"
+            sleepHours="5-6_hours"
+            heightPerYValue={separation}
+          />
+          <TrendXAxisElement
+            mood="very_happy"
+            sleepHours="7-8_hours"
+            heightPerYValue={separation}
+          />
+          <TrendXAxisElement
+            mood="sad"
+            sleepHours="3-4_hours"
+            heightPerYValue={separation}
+          />
+        </div>
+      </div>
     </section>
   );
 }
