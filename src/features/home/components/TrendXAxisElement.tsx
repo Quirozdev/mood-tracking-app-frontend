@@ -72,7 +72,13 @@ export function TrendXAxisElement({
 
   return (
     <div>
-      <div className="flex flex-col gap-y-1.5 text-center">
+      <div
+        className="flex flex-col gap-y-1.5 text-center"
+        /* little patch to avoid vertical scroll to appear when horizontal one appears */
+        style={{
+          minHeight: `${height + 40}px`,
+        }}
+      >
         <div
           className={clsx("w-10 rounded-full", colorClass)}
           style={{

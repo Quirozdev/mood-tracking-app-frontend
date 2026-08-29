@@ -9,7 +9,7 @@ export function HomePage() {
       <HeroSection />
       <Button className="w-fit self-center">Log today's mood</Button>
       <div className="flex flex-col gap-8 xl:flex-row">
-        <AveragesSection />
+        <AveragesSection className="shrink-0" />
         <TrendsSection className="flex-1" />
       </div>
     </div>

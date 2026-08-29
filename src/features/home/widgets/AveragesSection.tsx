@@ -1,8 +1,16 @@
 import { AverageCard } from "@/features/home/components/AverageCard";
+import clsx from "clsx";
 
-export function AveragesSection() {
+interface Props extends React.ComponentPropsWithRef<"section"> {}
+
+export function AveragesSection({ className }: Props) {
   return (
-    <section className="bg-neutral-0 rounded-16 box-border flex flex-col gap-y-6 border border-blue-100 px-4 py-5 md:px-5 md:py-6">
+    <section
+      className={clsx(
+        "bg-neutral-0 rounded-16 box-border flex flex-col gap-y-6 border border-blue-100 px-4 py-5 md:px-5 md:py-6",
+        className,
+      )}
+    >
       <AverageCard
         title="Average Mood"
         emptyStateTitle="Keep tracking!"
