@@ -1,5 +1,6 @@
 import { Button } from "@/shared/components/Button";
 import { Link } from "react-router";
+import CloseIcon from "@/assets/images/icon-close.svg";
 
 interface Props extends React.ComponentPropsWithRef<"form"> {
   title: string;
@@ -13,6 +14,7 @@ interface Props extends React.ComponentPropsWithRef<"form"> {
     linkTo: string;
     linkText: string;
   };
+  onClose?: () => void;
 }
 
 export function AuthFormContainer({
@@ -21,14 +23,24 @@ export function AuthFormContainer({
   subtitle,
   button,
   redirection,
+  onClose,
   ...props
 }: Props) {
   return (
     <form
-      className="rounded-16 mx-4 flex flex-col gap-8 px-8 py-10 shadow-[0px_8px_16px_rgba(32,37,41,0.08)] md:min-w-lg"
+      className="rounded-16 bg-neutral-0 mx-4 flex flex-col gap-8 px-8 py-10 shadow-[0px_8px_16px_rgba(32,37,41,0.08)] md:min-w-lg"
       {...props}
     >
       <div className="flex flex-col gap-2">
+        {!!onClose && (
+          <button
+            type="button"
+            className="cursor-pointer self-end"
+            onClick={onClose}
+          >
+            <img src={CloseIcon} alt="Close icon" className="h-4 w-4" />
+          </button>
+        )}
         <h1 className="text-preset-3 text-neutral-900">{title}</h1>
         <p className="text-neutral-600">{subtitle}</p>
       </div>

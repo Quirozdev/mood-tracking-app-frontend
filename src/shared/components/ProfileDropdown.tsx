@@ -7,10 +7,14 @@ import { useRef, useState } from "react";
 import clsx from "clsx";
 import { useClickOutsideDetector } from "@/shared/hooks/use-click-outside-detector";
 import { useKeyDown } from "@/shared/hooks/use-key-press";
+import { Overlay } from "@/shared/components/Overlay";
+import { UpdateUserForm } from "@/features/users/widgets/UpdateUserForm";
 
 export function ProfileDropdown() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isOverlayVisible, setIsOverlayVisible] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
   const { data: user } = useGetMe();
 
   useClickOutsideDetector({
@@ -24,6 +28,14 @@ export function ProfileDropdown() {
     key: "Escape",
     onKeyDown: () => {
       setIsOpen(false);
+      setIsOverlayVisible(false);
+    },
+  });
+
+  useClickOutsideDetector({
+    ref: overlayRef,
+    onClickOutside: () => {
+      setIsOverlayVisible(false);
     },
   });
 
@@ -54,16 +66,40 @@ export function ProfileDropdown() {
         </div>
         <div className="h-px w-full bg-blue-100"></div>
         <div className="flex flex-col gap-y-3">
-          <button className="flex cursor-pointer items-center gap-2.5">
+          <button
+            className="flex cursor-pointer items-center gap-2.5"
+            onClick={() => {
+              setIsOpen(false);
+              setIsOverlayVisible(true);
+            }}
+          >
             <img src={SettingsIcon} alt="Settings icon" />
             <span className="text-preset-7 text-neutral-900">Settings</span>
           </button>
-          <button className="flex cursor-pointer items-center gap-2.5">
+          <button
+            className="flex cursor-pointer items-center gap-2.5"
+            onClick={() => {
+              setIsOpen(false);
+            }}
+          >
             <img src={LogoutIcon} alt="Settings icon" />
             <span className="text-preset-7 text-neutral-900">Logout</span>
           </button>
         </div>
       </div>
+      <Overlay isVisible={isOverlayVisible} ref={overlayRef}>
+        <div className="mx-auto max-w-xl">
+          <UpdateUserForm
+            variant="update"
+            onClose={() => {
+              setIsOverlayVisible(false);
+            }}
+            onUpdatedUser={() => {
+              setIsOverlayVisible(false);
+            }}
+          />
+        </div>
+      </Overlay>
     </div>
   );
 }
