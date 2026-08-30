@@ -4,6 +4,7 @@ import { authRoutes } from "@/features/auth/routes";
 import RequireAuth from "@/app/guards/RequireAuth";
 import RequireOnboarding from "@/app/guards/RequireOnboarding";
 import { HomePage } from "@/features/home/pages/HomePage";
+import { NotFoundPage } from "@/app/pages/NotFoundPage";
 
 export const router = createBrowserRouter([
   ...authRoutes,
@@ -20,5 +21,9 @@ export const router = createBrowserRouter([
         ],
       },
     ],
+  },
+  {
+    path: "*",
+    element: <NotFoundPage />,
   },
 ]);
