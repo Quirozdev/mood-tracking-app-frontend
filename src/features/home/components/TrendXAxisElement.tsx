@@ -73,19 +73,26 @@ export function TrendXAxisElement({
   return (
     <div>
       <div
-        className="flex flex-col gap-y-1.5 text-center"
-        /* little patch to avoid vertical scroll to appear when horizontal one appears */
+        /* mb is a little patch to avoid vertical scroll to appear when horizontal one appears */
+        className="mb-0.5 flex flex-col justify-end gap-y-1.5 text-center"
         style={{
-          minHeight: `${height + 40}px`,
+          minHeight: `${height}px`,
         }}
       >
         <div
-          className={clsx("w-10 rounded-full", colorClass)}
+          className={clsx(
+            "animate-height-grow w-10 origin-bottom rounded-full",
+            colorClass,
+          )}
           style={{
             height: `${height}px`,
           }}
         >
-          <img src={icon} alt={alt} className="mx-auto px-1.25 py-1.25" />
+          <img
+            src={icon}
+            alt={alt}
+            className="mx-auto animate-[opacity_4s_ease-in-out_1,spin_4s_ease-in-out_1] px-1.25 py-1.25"
+          />
         </div>
         <span className="text-preset-9 text-neutral-900">April</span>
         <span className="text-preset-8 text-neutral-900">02</span>

@@ -172,4 +172,27 @@
   --radius-20: 20px;
   --radius-24: 24px;
   --radius-full: 999px;
+
+  /* Animations */
+
+  --animate-height-grow: height-grow 4s ease-in-out 1;
+  --animate-opacity: opacity 4s ease-in-out 1;
+
+  @keyframes height-grow {
+    0% {
+      transform: scaleY(0);
+    }
+    100% {
+      transform: scaleY(1);
+    }
+  }
+
+  @keyframes opacity {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
 }
