@@ -18,7 +18,6 @@ export function ProfileDropdown() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isOverlayVisible, setIsOverlayVisible] = useState<boolean>(false);
   const containerRef = useRef<HTMLDivElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
 
   const { data: user } = useGetMe();
   const { mutateAsync: logOut, isPending: isLoggingOut } = useLogout();
@@ -35,13 +34,6 @@ export function ProfileDropdown() {
     key: "Escape",
     onKeyDown: () => {
       setIsOpen(false);
-      setIsOverlayVisible(false);
-    },
-  });
-
-  useClickOutsideDetector({
-    ref: overlayRef,
-    onClickOutside: () => {
       setIsOverlayVisible(false);
     },
   });
@@ -103,7 +95,7 @@ export function ProfileDropdown() {
           </button>
         </div>
       </div>
-      <Overlay isVisible={isOverlayVisible} ref={overlayRef}>
+      <Overlay isVisible={isOverlayVisible} setIsVisible={setIsOverlayVisible}>
         <div className="mx-auto max-w-xl">
           <UpdateUserForm
             variant="update"

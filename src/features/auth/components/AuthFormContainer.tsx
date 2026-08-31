@@ -1,6 +1,7 @@
 import { Button } from "@/shared/components/Button";
 import { Link } from "react-router";
 import CloseIcon from "@/assets/images/icon-close.svg";
+import { FormContainer } from "@/shared/widgets/FormContainer";
 
 interface Props extends React.ComponentPropsWithRef<"form"> {
   title: string;
@@ -27,10 +28,7 @@ export function AuthFormContainer({
   ...props
 }: Props) {
   return (
-    <form
-      className="rounded-16 bg-neutral-0 mx-4 flex flex-col gap-8 px-8 py-10 shadow-[0px_8px_16px_rgba(32,37,41,0.08)] md:min-w-lg"
-      {...props}
-    >
+    <FormContainer {...props}>
       <div className="flex flex-col gap-2">
         {!!onClose && (
           <button
@@ -69,6 +67,6 @@ export function AuthFormContainer({
           </p>
         )}
       </div>
-    </form>
+    </FormContainer>
   );
 }
