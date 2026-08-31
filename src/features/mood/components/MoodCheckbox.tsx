@@ -50,7 +50,7 @@ export function MoodCheckbox({ mood, isSelected, setSelectedMood }: Props) {
   return (
     <button
       className={clsx(
-        "rounded-10 bg-neutral-0 flex cursor-pointer items-center justify-between px-5 py-3 outline-2",
+        "rounded-10 bg-neutral-0 flex cursor-pointer items-center justify-between px-5 py-3 outline-2 focus:shadow-[0px_0px_0px_3px_var(--color-neutral-0),0px_0px_0px_5px_var(--color-blue-600)]",
         isSelected ? "outline-blue-600" : "outline-blue-100",
       )}
       onClick={() => {
