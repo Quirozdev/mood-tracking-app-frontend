@@ -5,7 +5,6 @@ import type { Mood } from "@/features/mood/model/mood.types";
 import { MoodFormFirstStep } from "@/features/mood/widgets/MoodFormFirstStep";
 import { Button } from "@/shared/components/Button";
 import { MoodFormSecondStep } from "@/features/mood/widgets/MoodFormSecondStep";
-import clsx from "clsx";
 import { ProgressLine } from "@/features/mood/components/ProgressLine";
 
 interface Props {
@@ -13,8 +12,9 @@ interface Props {
 }
 
 export function LogMoodForm({ onClose }: Props) {
-  const [selectedMood, setSelectedMood] = useState<Mood>("very_happy");
   const [step, setCurrentStep] = useState<number>(1);
+  const [selectedMood, setSelectedMood] = useState<Mood>("very_happy");
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
 
   return (
     <FormContainer onSubmit={(e) => e.preventDefault()}>
@@ -37,11 +37,18 @@ export function LogMoodForm({ onClose }: Props) {
           <ProgressLine isActive={step >= 3} />
           <ProgressLine isActive={step >= 4} />
         </div>
-        <MoodFormFirstStep
-          selectedMood={selectedMood}
-          setSelectedMood={setSelectedMood}
-        />
-        <MoodFormSecondStep />
+        {step === 1 && (
+          <MoodFormFirstStep
+            selectedMood={selectedMood}
+            setSelectedMood={setSelectedMood}
+          />
+        )}
+        {step === 2 && (
+          <MoodFormSecondStep
+            selectedTags={selectedTags}
+            setSelectedTags={setSelectedTags}
+          />
+        )}
         {step < 4 && (
           <Button
             onClick={() => {

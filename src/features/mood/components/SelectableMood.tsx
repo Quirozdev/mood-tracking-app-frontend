@@ -14,7 +14,7 @@ interface Props extends React.ComponentPropsWithRef<"button"> {
   setSelectedMood: Dispatch<SetStateAction<Mood>>;
 }
 
-export function MoodCheckbox({ mood, isSelected, setSelectedMood }: Props) {
+export function SelectableMood({ mood, isSelected, setSelectedMood }: Props) {
   const metadata = getMetadata();
 
   function getMetadata(): { icon: string; text: string } {
