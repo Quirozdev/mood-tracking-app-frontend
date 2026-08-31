@@ -2,8 +2,11 @@ import { FormContainer } from "@/shared/widgets/FormContainer";
 import CloseIcon from "@/assets/images/icon-close.svg";
 import { useState } from "react";
 import type { Mood } from "@/features/mood/model/mood.types";
-import { MoodCheckboxGroup } from "@/features/mood/widgets/MoodCheckboxGroup";
+import { MoodFormFirstStep } from "@/features/mood/widgets/MoodFormFirstStep";
 import { Button } from "@/shared/components/Button";
+import { MoodFormSecondStep } from "@/features/mood/widgets/MoodFormSecondStep";
+import clsx from "clsx";
+import { ProgressLine } from "@/features/mood/components/ProgressLine";
 
 interface Props {
   onClose: () => void;
@@ -11,6 +14,7 @@ interface Props {
 
 export function LogMoodForm({ onClose }: Props) {
   const [selectedMood, setSelectedMood] = useState<Mood>("very_happy");
+  const [step, setCurrentStep] = useState<number>(1);
 
   return (
     <FormContainer onSubmit={(e) => e.preventDefault()}>
@@ -28,16 +32,26 @@ export function LogMoodForm({ onClose }: Props) {
           </h3>
         </div>
         <div className="flex items-center gap-x-4">
-          <div className="h-1.5 flex-1 rounded-full bg-blue-600"></div>
-          <div className="h-1.5 flex-1 rounded-full bg-blue-200"></div>
-          <div className="h-1.5 flex-1 rounded-full bg-blue-200"></div>
-          <div className="h-1.5 flex-1 rounded-full bg-blue-200"></div>
+          <ProgressLine isActive={step >= 1} />
+          <ProgressLine isActive={step >= 2} />
+          <ProgressLine isActive={step >= 3} />
+          <ProgressLine isActive={step >= 4} />
         </div>
-        <MoodCheckboxGroup
+        <MoodFormFirstStep
           selectedMood={selectedMood}
           setSelectedMood={setSelectedMood}
         />
-        <Button>Continue</Button>
+        <MoodFormSecondStep />
+        {step < 4 && (
+          <Button
+            onClick={() => {
+              setCurrentStep((prevStep) => prevStep + 1);
+            }}
+          >
+            Continue
+          </Button>
+        )}
+        {step === 4 && <Button type="submit">Submit</Button>}
       </div>
     </FormContainer>
   );

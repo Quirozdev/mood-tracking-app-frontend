@@ -174,9 +174,18 @@
   --radius-full: 999px;
 
   /* Animations */
-
+  --animate-width-grow: width-grow 1s ease-in-out 1;
   --animate-height-grow: height-grow 4s ease-in-out 1;
   --animate-opacity: opacity 4s ease-in-out 1;
+
+  @keyframes width-grow {
+    0% {
+      transform: scaleX(0);
+    }
+    100% {
+      transform: scaleX(1);
+    }
+  }
 
   @keyframes height-grow {
     0% {

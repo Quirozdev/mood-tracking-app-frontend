@@ -7,7 +7,7 @@ interface Props {
   setSelectedMood: Dispatch<SetStateAction<Mood>>;
 }
 
-export function MoodCheckboxGroup({ selectedMood, setSelectedMood }: Props) {
+export function MoodFormFirstStep({ selectedMood, setSelectedMood }: Props) {
   return (
     <div className="flex flex-col gap-y-3">
       <MoodCheckbox

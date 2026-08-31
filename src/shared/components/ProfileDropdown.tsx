@@ -48,7 +48,7 @@ export function ProfileDropdown() {
     <div className="relative" ref={containerRef}>
       <button
         className="flex cursor-pointer items-center gap-2.5"
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => setIsOpen((prevIsOpen) => !prevIsOpen)}
       >
         <Avatar src={user?.avatarUrl || null} size="sm" />
         <img src={IconDropdownArrow} alt="Dropdown icon" />
