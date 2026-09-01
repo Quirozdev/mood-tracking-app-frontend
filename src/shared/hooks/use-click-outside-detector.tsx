@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 interface Props extends React.ComponentPropsWithRef<any> {
-  onClickOutside: () => void;
+  onClickOutside: (e: PointerEvent) => void;
 }
 
 export function useClickOutsideDetector({ ref, onClickOutside }: Props) {
@@ -12,7 +12,7 @@ export function useClickOutsideDetector({ ref, onClickOutside }: Props) {
       const refContainsClickedElement = ref.current?.contains(e.target as Node);
 
       if (!refContainsClickedElement) {
-        onClickOutside();
+        onClickOutside(e);
       }
     };
 

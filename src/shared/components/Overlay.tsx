@@ -20,7 +20,10 @@ export function Overlay({ children, isVisible, setIsVisible }: Props) {
 
   useClickOutsideDetector({
     ref: ref,
-    onClickOutside: () => {
+    onClickOutside: (e) => {
+      const mouseButtonPressed = e.button;
+      // right click, i dont want to close overlay on right click
+      if (mouseButtonPressed === 2) return;
       setIsVisible(false);
     },
   });
