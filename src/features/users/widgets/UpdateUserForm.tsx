@@ -150,7 +150,7 @@ export function UpdateUserForm(props: Props) {
               </span>
             </div>
             <FilePicker
-              setSelectedFiles={setFiles}
+              onFilesChange={setFiles}
               maxFileSize={maxFileSize}
               accept="image/png,image/jpeg"
             />

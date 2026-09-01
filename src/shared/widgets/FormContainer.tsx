@@ -1,6 +1,6 @@
 import type React from "react";
 
-interface Props extends React.ComponentPropsWithRef<"form"> {}
+type Props = React.ComponentPropsWithRef<"form">;
 
 export function FormContainer({ children, ...props }: Props) {
   return (

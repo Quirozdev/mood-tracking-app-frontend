@@ -1,41 +1,20 @@
 import { FeelTagCheckbox } from "@/features/mood/components/FeelTagCheckbox";
-import type { ChangeEvent, Dispatch, SetStateAction } from "react";
+import { FEEL_TAGS } from "@/features/mood/model/mood.constants";
+import type { ChangeEvent } from "react";
 
 interface Props {
   selectedTags: string[];
-  setSelectedTags: Dispatch<SetStateAction<string[]>>;
+  onTagsChange: (tags: string[]) => void;
 }
 
-export function MoodFormSecondStep({ selectedTags, setSelectedTags }: Props) {
-  const feelTags = [
-    { label: "Joyful", value: "joyful" },
-    { label: "Down", value: "down" },
-    { label: "Anxious", value: "anxious" },
-    { label: "Calm", value: "calm" },
-    { label: "Excited", value: "excited" },
-    { label: "Frustrated", value: "frustrated" },
-    { label: "Overwhelmed", value: "lonely" },
-    { label: "Motivated", value: "motivated" },
-    { label: "Irritable", value: "irritable" },
-    { label: "Peaceful", value: "peaceful" },
-    { label: "Tired", value: "tired" },
-    { label: "Hopeful", value: "hopeful" },
-    { label: "Confident", value: "confident" },
-    { label: "Stressed", value: "stressed" },
-    { label: "Content", value: "content" },
-    { label: "Disappointed", value: "disappointed" },
-    { label: "Optimistic", value: "optimistic" },
-    { label: "Restless", value: "restless" },
-  ];
-
+export function MoodFormSecondStep({ selectedTags, onTagsChange }: Props) {
   function handleChange(e: ChangeEvent<HTMLInputElement>) {
     const checked = e.target.checked;
-    setSelectedTags((prevSelectedTags) => {
-      if (checked) {
-        return [...prevSelectedTags, e.target.value];
-      }
-      return prevSelectedTags.filter((tag) => tag !== e.target.value);
-    });
+    if (checked) {
+      onTagsChange([...selectedTags, e.target.value]);
+      return;
+    }
+    onTagsChange(selectedTags.filter((tag) => tag !== e.target.value));
   }
 
   return (
@@ -49,7 +28,7 @@ export function MoodFormSecondStep({ selectedTags, setSelectedTags }: Props) {
         </span>
       </div>
       <div className="flex flex-wrap gap-x-4 gap-y-3">
-        {feelTags.map((feelTag) => {
+        {FEEL_TAGS.map((feelTag) => {
           return (
             <FeelTagCheckbox
               key={feelTag.value}

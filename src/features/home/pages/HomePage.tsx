@@ -27,7 +27,7 @@ export function HomePage() {
       </div>
       <Overlay
         isVisible={isLogMoodFormVisible}
-        setIsVisible={setIsLogMoodFormVisible}
+        onVisibilityChange={setIsLogMoodFormVisible}
       >
         <div className="mx-auto max-w-xl">
           <LogMoodForm onClose={() => setIsLogMoodFormVisible(false)} />

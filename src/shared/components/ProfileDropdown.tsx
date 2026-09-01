@@ -95,7 +95,10 @@ export function ProfileDropdown() {
           </button>
         </div>
       </div>
-      <Overlay isVisible={isOverlayVisible} setIsVisible={setIsOverlayVisible}>
+      <Overlay
+        isVisible={isOverlayVisible}
+        onVisibilityChange={setIsOverlayVisible}
+      >
         <div className="mx-auto max-w-xl">
           <UpdateUserForm
             variant="update"

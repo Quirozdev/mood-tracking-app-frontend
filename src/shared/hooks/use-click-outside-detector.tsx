@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 
-interface Props extends React.ComponentPropsWithRef<any> {
+interface Props {
+  ref: React.RefObject<HTMLElement | null>;
   onClickOutside: (e: PointerEvent) => void;
 }
 

@@ -1,19 +1,14 @@
 import { Button } from "@/shared/components/Button";
 import { ErrorMessage } from "@/shared/components/ErrorMessage";
-import React, {
-  useRef,
-  useState,
-  type ChangeEvent,
-  type Dispatch,
-} from "react";
+import React, { useRef, useState, type ChangeEvent } from "react";
 
 interface Props extends React.ComponentPropsWithRef<"input"> {
-  setSelectedFiles: Dispatch<React.SetStateAction<FileList | null>>;
+  onFilesChange: (files: FileList | null) => void;
   // in bytes
   maxFileSize: number;
 }
 
-export function FilePicker({ setSelectedFiles, maxFileSize, ...props }: Props) {
+export function FilePicker({ onFilesChange, maxFileSize, ...props }: Props) {
   const [fileErrorMessage, setFileErrorMessage] = useState<string | null>(null);
   const inputFileRef = useRef<HTMLInputElement>(null);
 
@@ -36,11 +31,11 @@ export function FilePicker({ setSelectedFiles, maxFileSize, ...props }: Props) {
         resetInput();
         return;
       }
-      setSelectedFiles(files);
+      onFilesChange(files);
     }
 
     function resetInput() {
-      setSelectedFiles(null);
+      onFilesChange(null);
       if (inputFileRef.current) {
         inputFileRef.current.value = "";
       }

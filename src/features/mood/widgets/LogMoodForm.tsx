@@ -42,13 +42,13 @@ export function LogMoodForm({ onClose }: Props) {
         {step === 1 && (
           <MoodFormFirstStep
             selectedMood={selectedMood}
-            setSelectedMood={setSelectedMood}
+            onMoodChange={setSelectedMood}
           />
         )}
         {step === 2 && (
           <MoodFormSecondStep
             selectedTags={selectedTags}
-            setSelectedTags={setSelectedTags}
+            onTagsChange={setSelectedTags}
           />
         )}
         {step === 3 && (

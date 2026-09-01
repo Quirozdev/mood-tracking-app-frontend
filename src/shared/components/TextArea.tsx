@@ -1,6 +1,6 @@
 import type React from "react";
 
-interface Props extends React.ComponentPropsWithRef<"textarea"> {}
+type Props = React.ComponentPropsWithRef<"textarea">;
 
 export function TextArea({ ...props }: Props) {
   return (
