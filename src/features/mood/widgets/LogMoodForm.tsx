@@ -6,6 +6,7 @@ import { MoodFormFirstStep } from "@/features/mood/widgets/MoodFormFirstStep";
 import { Button } from "@/shared/components/Button";
 import { MoodFormSecondStep } from "@/features/mood/widgets/MoodFormSecondStep";
 import { ProgressLine } from "@/features/mood/components/ProgressLine";
+import { MoodFormThirdStep } from "@/features/mood/widgets/MoodFormThirdStep";
 
 interface Props {
   onClose: () => void;
@@ -15,6 +16,7 @@ export function LogMoodForm({ onClose }: Props) {
   const [step, setCurrentStep] = useState<number>(1);
   const [selectedMood, setSelectedMood] = useState<Mood>("very_happy");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [journalEntry, setJournalEntry] = useState<string>("");
 
   return (
     <FormContainer onSubmit={(e) => e.preventDefault()}>
@@ -47,6 +49,14 @@ export function LogMoodForm({ onClose }: Props) {
           <MoodFormSecondStep
             selectedTags={selectedTags}
             setSelectedTags={setSelectedTags}
+          />
+        )}
+        {step === 3 && (
+          <MoodFormThirdStep
+            journalEntry={journalEntry}
+            onJournalEntryChange={(value) => {
+              setJournalEntry(value);
+            }}
           />
         )}
         {step < 4 && (
