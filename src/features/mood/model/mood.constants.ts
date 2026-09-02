@@ -35,7 +35,7 @@ export const MOOD_OPTIONS: { label: string; value: Mood; icon: string }[] = [
 
 export const SLEEP_HOURS_OPTIONS: { label: string; value: SleepHours }[] = [
   {
-    value: "9",
+    value: "9+",
     label: "9+ hours",
   },
   {
