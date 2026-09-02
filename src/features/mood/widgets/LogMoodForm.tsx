@@ -1,12 +1,13 @@
 import { FormContainer } from "@/shared/widgets/FormContainer";
 import CloseIcon from "@/assets/images/icon-close.svg";
 import { useState } from "react";
-import type { Mood } from "@/features/mood/model/mood.types";
+import { type SleepHours, type Mood } from "@/features/mood/model/mood.types";
 import { MoodFormFirstStep } from "@/features/mood/widgets/MoodFormFirstStep";
 import { Button } from "@/shared/components/Button";
 import { MoodFormSecondStep } from "@/features/mood/widgets/MoodFormSecondStep";
 import { ProgressLine } from "@/features/mood/components/ProgressLine";
 import { MoodFormThirdStep } from "@/features/mood/widgets/MoodFormThirdStep";
+import { MoodFormFourthStep } from "@/features/mood/widgets/MoodFormFourthStep";
 
 interface Props {
   onClose: () => void;
@@ -17,6 +18,8 @@ export function LogMoodForm({ onClose }: Props) {
   const [selectedMood, setSelectedMood] = useState<Mood>("very_happy");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [journalEntry, setJournalEntry] = useState<string>("");
+  const [selectedSleepHours, setSelectedSleepHours] =
+    useState<SleepHours>("7-8_hours");
 
   return (
     <FormContainer onSubmit={(e) => e.preventDefault()}>
@@ -59,8 +62,15 @@ export function LogMoodForm({ onClose }: Props) {
             }}
           />
         )}
+        {step === 4 && (
+          <MoodFormFourthStep
+            selectedSleepHours={selectedSleepHours}
+            onSleepHoursChange={setSelectedSleepHours}
+          />
+        )}
         {step < 4 && (
           <Button
+            type="button"
             onClick={() => {
               setCurrentStep((prevStep) => prevStep + 1);
             }}
