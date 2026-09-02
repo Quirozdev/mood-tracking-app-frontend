@@ -17,9 +17,11 @@ export function MoodFormFirstStep({ selectedMood, onMoodChange }: Props) {
         {MOOD_OPTIONS.map((moodOption) => {
           return (
             <SelectableMood
-              key={moodOption}
-              mood={moodOption}
-              isSelected={selectedMood === moodOption}
+              key={moodOption.value}
+              mood={moodOption.value}
+              label={moodOption.label}
+              icon={moodOption.icon}
+              isSelected={selectedMood === moodOption.value}
               onMoodChange={onMoodChange}
             />
           );

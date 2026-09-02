@@ -1,11 +1,36 @@
 import type { Mood, SleepHours } from "@/features/mood/model/mood.types";
+import VeryHappyFaceIcon from "@/assets/images/icon-very-happy-color.svg";
+import HappyFaceIcon from "@/assets/images/icon-happy-color.svg";
+import NeutralFaceIcon from "@/assets/images/icon-neutral-color.svg";
+import SadFaceIcon from "@/assets/images/icon-sad-color.svg";
+import VerySadFaceIcon from "@/assets/images/icon-very-sad-color.svg";
 
-export const MOOD_OPTIONS: Mood[] = [
-  "very_happy",
-  "happy",
-  "neutral",
-  "sad",
-  "very_sad",
+export const MOOD_OPTIONS: { label: string; value: Mood; icon: string }[] = [
+  {
+    label: "Very Happy",
+    value: "very_happy",
+    icon: VeryHappyFaceIcon,
+  },
+  {
+    label: "Happy",
+    value: "happy",
+    icon: HappyFaceIcon,
+  },
+  {
+    label: "Neutral",
+    value: "neutral",
+    icon: NeutralFaceIcon,
+  },
+  {
+    label: "Sad",
+    value: "sad",
+    icon: SadFaceIcon,
+  },
+  {
+    label: "Very Sad",
+    value: "very_sad",
+    icon: VerySadFaceIcon,
+  },
 ];
 
 export const SLEEP_HOURS_OPTIONS: { label: string; value: SleepHours }[] = [
