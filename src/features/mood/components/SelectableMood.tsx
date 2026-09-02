@@ -6,6 +6,7 @@ interface Props {
   isSelected: boolean;
   label: string;
   icon: string;
+  name: string;
   onMoodChange: (mood: Mood) => void;
 }
 
@@ -14,13 +15,14 @@ export function SelectableMood({
   isSelected,
   label,
   icon,
+  name,
   onMoodChange,
 }: Props) {
   return (
     <RadioInput
       label={label}
       value={mood}
-      name="mood"
+      name={name}
       icon={icon}
       checked={isSelected}
       onChange={() => onMoodChange(mood)}

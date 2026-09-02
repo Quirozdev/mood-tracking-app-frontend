@@ -1,13 +1,17 @@
 import { FormContainer } from "@/shared/widgets/FormContainer";
 import CloseIcon from "@/assets/images/icon-close.svg";
 import { useState } from "react";
-import { type SleepHours, type Mood } from "@/features/mood/model/mood.types";
 import { MoodFormFirstStep } from "@/features/mood/widgets/MoodFormFirstStep";
 import { Button } from "@/shared/components/Button";
 import { MoodFormSecondStep } from "@/features/mood/widgets/MoodFormSecondStep";
 import { ProgressLine } from "@/features/mood/components/ProgressLine";
 import { MoodFormThirdStep } from "@/features/mood/widgets/MoodFormThirdStep";
 import { MoodFormFourthStep } from "@/features/mood/widgets/MoodFormFourthStep";
+import { FormProvider, useForm } from "react-hook-form";
+import type z from "zod";
+import { logMoodSchema } from "@/features/mood/schemas/log-mood.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { ErrorMessage } from "@/shared/components/ErrorMessage";
 
 interface Props {
   onClose: () => void;
@@ -15,71 +19,85 @@ interface Props {
 
 export function LogMoodForm({ onClose }: Props) {
   const [step, setCurrentStep] = useState<number>(1);
-  const [selectedMood, setSelectedMood] = useState<Mood>("very_happy");
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [journalEntry, setJournalEntry] = useState<string>("");
-  const [selectedSleepHours, setSelectedSleepHours] =
-    useState<SleepHours>("7-8_hours");
+
+  const methods = useForm<z.infer<typeof logMoodSchema>>({
+    resolver: zodResolver(logMoodSchema),
+    mode: "onChange",
+    defaultValues: {
+      feelings: [],
+      journalEntry: "",
+    },
+  });
+
+  const {
+    handleSubmit,
+    trigger,
+    formState: { errors },
+  } = methods;
+
+  const stepsMapping: Record<
+    number,
+    "mood" | "feelings" | "journalEntry" | "sleepHours"
+  > = {
+    1: "mood",
+    2: "feelings",
+    3: "journalEntry",
+    4: "sleepHours",
+  };
+
+  const currentStepError = errors[stepsMapping[step]]?.message;
+
+  function onSubmit(data: z.infer<typeof logMoodSchema>) {
+    console.log(data);
+  }
 
   return (
-    <FormContainer onSubmit={(e) => e.preventDefault()}>
-      <div className="flex flex-col gap-y-6 md:gap-y-8">
-        <div className="flex flex-col gap-1">
-          <button
-            type="button"
-            className="hidden cursor-pointer self-end md:block"
-            onClick={onClose}
-          >
-            <img src={CloseIcon} alt="Close icon" className="h-4 w-4" />
-          </button>
-          <h3 className="text-preset-3 md:text-preset-2 text-neutral-900">
-            Log your mood
-          </h3>
+    <FormProvider {...methods}>
+      <FormContainer onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-col gap-y-6 md:gap-y-8">
+          <div className="flex flex-col gap-1">
+            <button
+              type="button"
+              className="hidden cursor-pointer self-end md:block"
+              onClick={onClose}
+            >
+              <img src={CloseIcon} alt="Close icon" className="h-4 w-4" />
+            </button>
+            <h3 className="text-preset-3 md:text-preset-2 text-neutral-900">
+              Log your mood
+            </h3>
+          </div>
+          <div className="flex items-center gap-x-4">
+            <ProgressLine isActive={step >= 1} />
+            <ProgressLine isActive={step >= 2} />
+            <ProgressLine isActive={step >= 3} />
+            <ProgressLine isActive={step >= 4} />
+          </div>
+          {step === 1 && <MoodFormFirstStep />}
+          {step === 2 && <MoodFormSecondStep />}
+          {step === 3 && <MoodFormThirdStep />}
+          {step === 4 && <MoodFormFourthStep />}
+          <div className="flex flex-col gap-y-4">
+            {currentStepError && <ErrorMessage text={currentStepError} />}
+            {step < 4 && (
+              <Button
+                type="button"
+                onClick={async () => {
+                  const isValid = await trigger(stepsMapping[step]);
+
+                  if (!isValid) {
+                    return;
+                  }
+                  setCurrentStep((prevStep) => prevStep + 1);
+                }}
+              >
+                Continue
+              </Button>
+            )}
+            {step === 4 && <Button type="submit">Submit</Button>}
+          </div>
         </div>
-        <div className="flex items-center gap-x-4">
-          <ProgressLine isActive={step >= 1} />
-          <ProgressLine isActive={step >= 2} />
-          <ProgressLine isActive={step >= 3} />
-          <ProgressLine isActive={step >= 4} />
-        </div>
-        {step === 1 && (
-          <MoodFormFirstStep
-            selectedMood={selectedMood}
-            onMoodChange={setSelectedMood}
-          />
-        )}
-        {step === 2 && (
-          <MoodFormSecondStep
-            selectedTags={selectedTags}
-            onTagsChange={setSelectedTags}
-          />
-        )}
-        {step === 3 && (
-          <MoodFormThirdStep
-            journalEntry={journalEntry}
-            onJournalEntryChange={(value) => {
-              setJournalEntry(value);
-            }}
-          />
-        )}
-        {step === 4 && (
-          <MoodFormFourthStep
-            selectedSleepHours={selectedSleepHours}
-            onSleepHoursChange={setSelectedSleepHours}
-          />
-        )}
-        {step < 4 && (
-          <Button
-            type="button"
-            onClick={() => {
-              setCurrentStep((prevStep) => prevStep + 1);
-            }}
-          >
-            Continue
-          </Button>
-        )}
-        {step === 4 && <Button type="submit">Submit</Button>}
-      </div>
-    </FormContainer>
+      </FormContainer>
+    </FormProvider>
   );
 }

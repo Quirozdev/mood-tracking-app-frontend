@@ -1,6 +1,6 @@
 import { AuthFormContainer } from "@/features/auth/components/AuthFormContainer";
 import { useSignIn } from "@/features/auth/hooks/use-sign-in";
-import { signInSchema } from "@/features/auth/schemas/sign-in-schema";
+import { signInSchema } from "@/features/auth/schemas/sign-in.schema";
 import { showToast } from "@/features/toast/lib/toast";
 import { Input } from "@/shared/components/Input";
 import { setItem } from "@/shared/lib/local-storage";

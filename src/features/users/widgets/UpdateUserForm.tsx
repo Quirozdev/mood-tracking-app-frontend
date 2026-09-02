@@ -1,6 +1,6 @@
 import { AuthFormContainer } from "@/features/auth/components/AuthFormContainer";
 import { GET_ME_QUERY_KEY, useGetMe } from "@/features/auth/hooks/use-get-me";
-import { onboardingSchema } from "@/features/auth/schemas/onboarding-schema";
+import { onboardingSchema } from "@/features/auth/schemas/onboarding.schema";
 import { showToast } from "@/features/toast/lib/toast";
 import { useUpdateUser } from "@/features/users/hooks/use-update-user";
 import { useUploadAvatar } from "@/features/users/hooks/use-upload-avatar";

@@ -1,20 +1,22 @@
 import { FeelTagCheckbox } from "@/features/mood/components/FeelTagCheckbox";
 import { FEEL_TAGS } from "@/features/mood/model/mood.constants";
-import type { ChangeEvent } from "react";
+import type { logMoodSchema } from "@/features/mood/schemas/log-mood.schema";
+import type React from "react";
+import { Controller, useFormContext } from "react-hook-form";
+import * as z from "zod";
 
-interface Props {
-  selectedTags: string[];
-  onTagsChange: (tags: string[]) => void;
-}
+export function MoodFormSecondStep() {
+  const { control } = useFormContext<z.infer<typeof logMoodSchema>>();
 
-export function MoodFormSecondStep({ selectedTags, onTagsChange }: Props) {
-  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+  function getUpdatedTags(
+    selectedTags: string[],
+    e: React.ChangeEvent<HTMLInputElement>,
+  ) {
     const checked = e.target.checked;
     if (checked) {
-      onTagsChange([...selectedTags, e.target.value]);
-      return;
+      return [...selectedTags, e.target.value];
     }
-    onTagsChange(selectedTags.filter((tag) => tag !== e.target.value));
+    return selectedTags.filter((tag) => tag !== e.target.value);
   }
 
   return (
@@ -27,19 +29,30 @@ export function MoodFormSecondStep({ selectedTags, onTagsChange }: Props) {
           Select up to three tags:
         </span>
       </div>
-      <div className="flex flex-wrap gap-x-4 gap-y-3">
-        {FEEL_TAGS.map((feelTag) => {
+      <Controller
+        name="feelings"
+        control={control}
+        render={({ field }) => {
           return (
-            <FeelTagCheckbox
-              key={feelTag.value}
-              label={feelTag.label}
-              value={feelTag.value}
-              checked={selectedTags.includes(feelTag.value)}
-              onChange={handleChange}
-            />
+            <div className="flex flex-wrap gap-x-4 gap-y-3">
+              {FEEL_TAGS.map((feelTag) => {
+                return (
+                  <FeelTagCheckbox
+                    key={feelTag.value}
+                    name={field.name}
+                    label={feelTag.label}
+                    value={feelTag.value}
+                    checked={field.value?.includes(feelTag.value)}
+                    onChange={(e) => {
+                      field.onChange(getUpdatedTags(field.value, e));
+                    }}
+                  />
+                );
+              })}
+            </div>
           );
-        })}
-      </div>
+        }}
+      />
     </div>
   );
 }
