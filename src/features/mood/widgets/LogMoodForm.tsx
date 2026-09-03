@@ -12,6 +12,9 @@ import type z from "zod";
 import { logMoodSchema } from "@/features/mood/schemas/log-mood.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorMessage } from "@/shared/components/ErrorMessage";
+import { useLogMood } from "@/features/mood/hooks/use-log-mood";
+import { showToast } from "@/features/toast/lib/toast";
+import { formatDateToIsoStringWithoutTime } from "@/shared/lib/dates";
 
 interface Props {
   onClose: () => void;
@@ -35,6 +38,8 @@ export function LogMoodForm({ onClose }: Props) {
     formState: { errors },
   } = methods;
 
+  const { mutateAsync: logMood, isPending: isLoggingMood } = useLogMood();
+
   const stepsMapping: Record<
     number,
     "mood" | "feelings" | "journalEntry" | "sleepHours"
@@ -47,8 +52,19 @@ export function LogMoodForm({ onClose }: Props) {
 
   const currentStepError = errors[stepsMapping[step]]?.message;
 
-  function onSubmit(data: z.infer<typeof logMoodSchema>) {
-    console.log(data);
+  async function onSubmit(data: z.infer<typeof logMoodSchema>) {
+    await logMood({
+      day: formatDateToIsoStringWithoutTime(new Date()),
+      logMoodInput: {
+        mood: data.mood,
+        feelings: data.feelings,
+        journalEntry: data.journalEntry,
+        sleepHours: data.sleepHours,
+      },
+    });
+
+    showToast("success", "Mood logged!");
+    onClose();
   }
 
   return (
@@ -94,7 +110,15 @@ export function LogMoodForm({ onClose }: Props) {
                 Continue
               </Button>
             )}
-            {step === 4 && <Button type="submit">Submit</Button>}
+            {step === 4 && (
+              <Button
+                type="submit"
+                disabled={isLoggingMood}
+                isLoading={isLoggingMood}
+              >
+                Submit
+              </Button>
+            )}
           </div>
         </div>
       </FormContainer>
