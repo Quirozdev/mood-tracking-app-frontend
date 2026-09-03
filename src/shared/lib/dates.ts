@@ -1,3 +1,7 @@
+export function getCurrentDate() {
+  return new Date();
+}
+
 export function formatDateToIsoStringWithoutTime(date: Date) {
   let day: number | string = date.getDate();
   let month: number | string = date.getMonth() + 1;

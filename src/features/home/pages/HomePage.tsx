@@ -5,10 +5,19 @@ import { TrendsSection } from "@/features/home/widgets/TrendsSection";
 import { useState } from "react";
 import { Overlay } from "@/shared/components/Overlay";
 import { LogMoodForm } from "@/features/mood/widgets/LogMoodForm";
+import { useGetMoodEntryByDay } from "@/features/mood/hooks/use-get-mood-entry-by-day";
+import {
+  formatDateToIsoStringWithoutTime,
+  getCurrentDate,
+} from "@/shared/lib/dates";
 
 export function HomePage() {
   const [isLogMoodFormVisible, setIsLogMoodFormVisible] =
     useState<boolean>(false);
+
+  const { data, isLoading } = useGetMoodEntryByDay(
+    formatDateToIsoStringWithoutTime(getCurrentDate()),
+  );
 
   return (
     <div className="flex flex-col gap-y-12 xl:gap-y-16">

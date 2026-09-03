@@ -1,8 +1,8 @@
 import type { LogMoodInput } from "@/features/mood/model/mood.types";
-import { logMood } from "@/features/mood/services/log-mood";
+import { logMoodEntry } from "@/features/mood/services/log-mood-entry";
 import { useMutation } from "@tanstack/react-query";
 
-export function useLogMood() {
+export function useLogMoodEntry() {
   return useMutation({
     mutationFn: ({
       day,
@@ -11,7 +11,7 @@ export function useLogMood() {
       day: string;
       logMoodInput: LogMoodInput;
     }) => {
-      return logMood(day, logMoodInput);
+      return logMoodEntry(day, logMoodInput);
     },
   });
 }

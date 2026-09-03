@@ -12,9 +12,12 @@ import type z from "zod";
 import { logMoodSchema } from "@/features/mood/schemas/log-mood.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ErrorMessage } from "@/shared/components/ErrorMessage";
-import { useLogMood } from "@/features/mood/hooks/use-log-mood";
+import { useLogMoodEntry } from "@/features/mood/hooks/use-log-mood-entry";
 import { showToast } from "@/features/toast/lib/toast";
-import { formatDateToIsoStringWithoutTime } from "@/shared/lib/dates";
+import {
+  formatDateToIsoStringWithoutTime,
+  getCurrentDate,
+} from "@/shared/lib/dates";
 
 interface Props {
   onClose: () => void;
@@ -38,7 +41,7 @@ export function LogMoodForm({ onClose }: Props) {
     formState: { errors },
   } = methods;
 
-  const { mutateAsync: logMood, isPending: isLoggingMood } = useLogMood();
+  const { mutateAsync: logMood, isPending: isLoggingMood } = useLogMoodEntry();
 
   const stepsMapping: Record<
     number,
@@ -54,7 +57,7 @@ export function LogMoodForm({ onClose }: Props) {
 
   async function onSubmit(data: z.infer<typeof logMoodSchema>) {
     await logMood({
-      day: formatDateToIsoStringWithoutTime(new Date()),
+      day: formatDateToIsoStringWithoutTime(getCurrentDate()),
       logMoodInput: {
         mood: data.mood,
         feelings: data.feelings,
