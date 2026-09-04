@@ -10,6 +10,7 @@ import {
   formatDateToIsoStringWithoutTime,
   getCurrentDate,
 } from "@/shared/lib/dates";
+import { MoodLogSection } from "@/features/home/widgets/MoodLogSection";
 
 export function HomePage() {
   const [isLogMoodFormVisible, setIsLogMoodFormVisible] =
@@ -30,6 +31,7 @@ export function HomePage() {
       >
         Log today's mood
       </Button>
+      {data && <MoodLogSection moodEntry={data} />}
       <div className="flex flex-col gap-8 xl:flex-row">
         <AveragesSection className="shrink-0" />
         <TrendsSection className="flex-1" />
