@@ -17,7 +17,7 @@ export function SleepCard({ sleepHours, className }: Props) {
     <HomeContainer variant="small" className={className}>
       <div className="flex flex-col gap-y-4">
         <div className="flex items-center gap-x-3">
-          <img src={SleepIcon} alt="Sleep Icon" />
+          <img src={SleepIcon} alt="Sleep Icon" className="h-5.5 w-5.5" />
           <p className="text-preset-6 text-neutral-600">Sleep</p>
         </div>
         <p className="text-preset-3 text-neutral-900">
