@@ -1,8 +1,4 @@
-import VerySadFaceWhiteIcon from "@/assets/images/icon-very-sad-white.svg";
-import SadFaceWhiteIcon from "@/assets/images/icon-sad-white.svg";
-import NeutralFaceWhiteIcon from "@/assets/images/icon-neutral-white.svg";
-import HappyFaceWhiteIcon from "@/assets/images/icon-happy-white.svg";
-import VeryHappyFaceWhiteIcon from "@/assets/images/icon-very-happy-white.svg";
+import { getMetadata } from "@/features/mood/lib/mood";
 import type { Mood, SleepHours } from "@/features/mood/model/mood.types";
 import clsx from "clsx";
 
@@ -17,43 +13,8 @@ export function TrendXAxisElement({
   sleepHours,
   heightPerYValue,
 }: Props) {
-  const { icon, alt, colorClass } = getMetadata();
+  const { icon, alt, colorClass } = getMetadata(mood);
   const height = getHeight();
-
-  function getMetadata(): { icon: string; alt: string; colorClass: string } {
-    switch (mood) {
-      case "very_sad":
-        return {
-          icon: VerySadFaceWhiteIcon,
-          alt: "Very sad face",
-          colorClass: "bg-red-300",
-        };
-      case "sad":
-        return {
-          icon: SadFaceWhiteIcon,
-          alt: "Sad face",
-          colorClass: "bg-indigo-200",
-        };
-      case "neutral":
-        return {
-          icon: NeutralFaceWhiteIcon,
-          alt: "Neutral face",
-          colorClass: "bg-blue-300",
-        };
-      case "happy":
-        return {
-          icon: HappyFaceWhiteIcon,
-          alt: "Happy face",
-          colorClass: "bg-green-300",
-        };
-      case "very_happy":
-        return {
-          icon: VeryHappyFaceWhiteIcon,
-          alt: "Very happy face",
-          colorClass: "bg-amber-300",
-        };
-    }
-  }
 
   function getHeight(): number {
     switch (sleepHours) {
@@ -65,7 +26,7 @@ export function TrendXAxisElement({
         return heightPerYValue * 3;
       case "7-8_hours":
         return heightPerYValue * 4;
-      case "9":
+      case "9+":
         return heightPerYValue * 5;
     }
   }

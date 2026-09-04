@@ -3,17 +3,13 @@ import { TrendYAxisElement } from "@/features/home/components/TrendYAxisElement"
 import { TrendXAxisElement } from "@/features/home/components/TrendXAxisElement";
 import { useEffect, useRef, useState } from "react";
 
-interface Props extends React.ComponentPropsWithRef<"section"> {}
+type Props = React.ComponentPropsWithRef<"section">;
 
 export function TrendsSection({ className }: Props) {
   const yFirstAxisElementRef = useRef<HTMLDivElement>(null);
   const ySecondAxisElementRef = useRef<HTMLDivElement>(null);
 
   const [separation, setSeparation] = useState<number>(0);
-
-  useEffect(() => {
-    setSeparation(calculateSeparationFromYAxisElements());
-  }, [yFirstAxisElementRef, ySecondAxisElementRef]);
 
   // so i can dinamycally put x axis labels at exact position and to fill each bar dynamically with correct heights instead of hardcoded ones
   function calculateSeparationFromYAxisElements() {
@@ -22,6 +18,10 @@ export function TrendsSection({ className }: Props) {
       (yFirstAxisElementRef.current?.offsetTop || 0)
     );
   }
+
+  useEffect(() => {
+    setSeparation(calculateSeparationFromYAxisElements());
+  }, [yFirstAxisElementRef, ySecondAxisElementRef]);
 
   return (
     <section
@@ -45,7 +45,7 @@ export function TrendsSection({ className }: Props) {
         <div className="flex scrollbar-thin scrollbar-thumb-blue-200 items-end gap-x-4 self-end overflow-x-auto xl:gap-x-4.5">
           <TrendXAxisElement
             mood="very_happy"
-            sleepHours="9"
+            sleepHours="9+"
             heightPerYValue={separation}
           />
           <TrendXAxisElement
@@ -85,7 +85,7 @@ export function TrendsSection({ className }: Props) {
           />
           <TrendXAxisElement
             mood="very_happy"
-            sleepHours="9"
+            sleepHours="9+"
             heightPerYValue={separation}
           />
           <TrendXAxisElement
@@ -125,7 +125,7 @@ export function TrendsSection({ className }: Props) {
           />
           <TrendXAxisElement
             mood="very_happy"
-            sleepHours="9"
+            sleepHours="9+"
             heightPerYValue={separation}
           />
           <TrendXAxisElement

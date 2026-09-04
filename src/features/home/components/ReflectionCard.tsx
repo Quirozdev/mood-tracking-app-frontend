@@ -27,7 +27,10 @@ export function ReflectionCard({ journalEntry, feelings, className }: Props) {
         </p>
         <div className="mt-auto flex flex-wrap gap-3">
           {feelings.map((feeling) => (
-            <p className="text-preset-6-italic text-neutral-600 italic">
+            <p
+              key={feeling}
+              className="text-preset-6-italic text-neutral-600 italic"
+            >
               #{FEEL_TAGS.find((feelTag) => feelTag.value === feeling)?.label}
             </p>
           ))}

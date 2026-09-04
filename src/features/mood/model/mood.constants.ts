@@ -33,6 +33,14 @@ export const MOOD_OPTIONS: { label: string; value: Mood; icon: string }[] = [
   },
 ];
 
+export const moodToValue = {
+  very_sad: -2,
+  sad: -1,
+  neutral: -0,
+  happy: 1,
+  very_happy: 2,
+};
+
 export const SLEEP_HOURS_OPTIONS: { label: string; value: SleepHours }[] = [
   {
     value: "9+",
@@ -55,6 +63,14 @@ export const SLEEP_HOURS_OPTIONS: { label: string; value: SleepHours }[] = [
     label: "0-2 hours",
   },
 ];
+
+export const sleepHoursToValue = {
+  "0-2_hours": 0,
+  "3-4_hours": 1,
+  "5-6_hours": 2,
+  "7-8_hours": 3,
+  "9+": 4,
+};
 
 export const FEEL_TAGS = [
   { label: "Joyful", value: "joyful" },

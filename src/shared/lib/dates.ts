@@ -14,3 +14,7 @@ export function formatDateToIsoStringWithoutTime(date: Date) {
   }
   return `${year}-${month}-${day}`;
 }
+
+export function subtractDaysFromDate(date: Date, days: number) {
+  return new Date(new Date().setDate(date.getDate() - days));
+}
