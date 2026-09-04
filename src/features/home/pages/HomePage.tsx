@@ -11,6 +11,7 @@ import {
   getCurrentDate,
 } from "@/shared/lib/dates";
 import { MoodLogSection } from "@/features/home/widgets/MoodLogSection";
+import { LoadingFullScreen } from "@/shared/components/LoadingFullScreen";
 
 export function HomePage() {
   const [isLogMoodFormVisible, setIsLogMoodFormVisible] =
@@ -20,18 +21,25 @@ export function HomePage() {
     formatDateToIsoStringWithoutTime(getCurrentDate()),
   );
 
+  if (isLoading) {
+    return <LoadingFullScreen />;
+  }
+
   return (
     <div className="flex flex-col gap-y-12 xl:gap-y-16">
       <HeroSection />
-      <Button
-        className="w-fit self-center"
-        onClick={() => {
-          setIsLogMoodFormVisible(true);
-        }}
-      >
-        Log today's mood
-      </Button>
-      {data && <MoodLogSection moodEntry={data} />}
+      {data ? (
+        <MoodLogSection moodEntry={data} />
+      ) : (
+        <Button
+          className="w-fit self-center"
+          onClick={() => {
+            setIsLogMoodFormVisible(true);
+          }}
+        >
+          Log today's mood
+        </Button>
+      )}
       <div className="flex flex-col gap-8 xl:flex-row">
         <AveragesSection className="shrink-0" />
         <TrendsSection className="flex-1" />

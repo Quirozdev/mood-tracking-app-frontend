@@ -7,5 +7,9 @@ export function useGetMoodEntryByDay(day: string) {
     queryFn: () => {
       return getMoodEntryByDay(day);
     },
+    retry: false,
+    meta: {
+      shouldBeHandledByGlobalErrorHandler: false,
+    },
   });
 }

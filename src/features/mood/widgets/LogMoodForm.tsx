@@ -18,6 +18,7 @@ import {
   formatDateToIsoStringWithoutTime,
   getCurrentDate,
 } from "@/shared/lib/dates";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface Props {
   onClose: () => void;
@@ -42,6 +43,7 @@ export function LogMoodForm({ onClose }: Props) {
   } = methods;
 
   const { mutateAsync: logMood, isPending: isLoggingMood } = useLogMoodEntry();
+  const queryClient = useQueryClient();
 
   const stepsMapping: Record<
     number,
@@ -56,6 +58,8 @@ export function LogMoodForm({ onClose }: Props) {
   const currentStepError = errors[stepsMapping[step]]?.message;
 
   async function onSubmit(data: z.infer<typeof logMoodSchema>) {
+    const day = formatDateToIsoStringWithoutTime(getCurrentDate());
+
     await logMood({
       day: formatDateToIsoStringWithoutTime(getCurrentDate()),
       logMoodInput: {
@@ -67,6 +71,9 @@ export function LogMoodForm({ onClose }: Props) {
     });
 
     showToast("success", "Mood logged!");
+    queryClient.invalidateQueries({
+      queryKey: ["mood-entries", day],
+    });
     onClose();
   }
 

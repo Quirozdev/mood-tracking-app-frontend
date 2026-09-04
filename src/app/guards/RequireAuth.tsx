@@ -1,12 +1,12 @@
 import { useGetMe } from "@/features/auth/hooks/use-get-me";
-import { LoadingAuth } from "@/features/auth/pages/LoadingAuth";
+import { LoadingFullScreen } from "@/shared/components/LoadingFullScreen";
 import { Navigate, Outlet } from "react-router";
 
 export default function RequireAuth() {
   const { data: user, isLoading } = useGetMe();
 
   if (isLoading) {
-    return <LoadingAuth />;
+    return <LoadingFullScreen />;
   }
 
   if (!user) {
