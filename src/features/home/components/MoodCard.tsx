@@ -4,11 +4,11 @@ import QuoteIcon from "@/assets/images/icon-quote.svg";
 import type { Mood } from "@/features/mood/model/mood.types";
 import { getMoodQuote } from "@/features/mood/lib/mood";
 
-interface Props {
+interface Props extends React.ComponentPropsWithRef<typeof HomeContainer> {
   mood: Mood;
 }
 
-export function MoodCard({ mood }: Props) {
+export function MoodCard({ mood, className }: Props) {
   const moodMetadata = MOOD_OPTIONS.find(
     (moodOption) => moodOption.value === mood,
   );
@@ -16,7 +16,7 @@ export function MoodCard({ mood }: Props) {
   const moodQuote = getMoodQuote(mood);
 
   return (
-    <HomeContainer>
+    <HomeContainer variant="large" className={className}>
       <div className="flex flex-col items-center gap-y-8 md:items-start md:justify-between">
         <div className="text-center md:text-left">
           <h3 className="text-preset-3 text-neutral-900 opacity-70">
