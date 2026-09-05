@@ -2,10 +2,13 @@ import clsx from "clsx";
 import { TrendYAxisElement } from "@/features/home/components/TrendYAxisElement";
 import { TrendXAxisElement } from "@/features/home/components/TrendXAxisElement";
 import { useEffect, useRef, useState } from "react";
+import type { GetMoodEntriesResponse } from "@/features/mood/model/mood.types";
 
-type Props = React.ComponentPropsWithRef<"section">;
+interface Props extends React.ComponentPropsWithRef<"section"> {
+  moodEntries: GetMoodEntriesResponse[];
+}
 
-export function TrendsSection({ className }: Props) {
+export function TrendsSection({ moodEntries, className }: Props) {
   const yFirstAxisElementRef = useRef<HTMLDivElement>(null);
   const ySecondAxisElementRef = useRef<HTMLDivElement>(null);
 
@@ -43,126 +46,15 @@ export function TrendsSection({ className }: Props) {
           <TrendYAxisElement text="0-2 hours" />
         </div>
         <div className="flex scrollbar-thin scrollbar-thumb-blue-200 items-end gap-x-4 self-end overflow-x-auto xl:gap-x-4.5">
-          <TrendXAxisElement
-            mood="very_happy"
-            sleepHours="9+"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="happy"
-            sleepHours="3-4_hours"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="neutral"
-            sleepHours="5-6_hours"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="sad"
-            sleepHours="7-8_hours"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="very_sad"
-            sleepHours="0-2_hours"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="neutral"
-            sleepHours="5-6_hours"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="very_happy"
-            sleepHours="7-8_hours"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="sad"
-            sleepHours="3-4_hours"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="very_happy"
-            sleepHours="9+"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="happy"
-            sleepHours="3-4_hours"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="neutral"
-            sleepHours="5-6_hours"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="sad"
-            sleepHours="7-8_hours"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="very_sad"
-            sleepHours="0-2_hours"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="neutral"
-            sleepHours="5-6_hours"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="very_happy"
-            sleepHours="7-8_hours"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="sad"
-            sleepHours="3-4_hours"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="very_happy"
-            sleepHours="9+"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="happy"
-            sleepHours="3-4_hours"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="neutral"
-            sleepHours="5-6_hours"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="sad"
-            sleepHours="7-8_hours"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="very_sad"
-            sleepHours="0-2_hours"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="neutral"
-            sleepHours="5-6_hours"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="very_happy"
-            sleepHours="7-8_hours"
-            heightPerYValue={separation}
-          />
-          <TrendXAxisElement
-            mood="sad"
-            sleepHours="3-4_hours"
-            heightPerYValue={separation}
-          />
+          {moodEntries.map((moodEntry) => {
+            return (
+              <TrendXAxisElement
+                key={moodEntry.id}
+                moodEntry={moodEntry}
+                heightPerYValue={separation}
+              />
+            );
+          })}
         </div>
       </div>
     </section>

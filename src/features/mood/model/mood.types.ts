@@ -33,3 +33,5 @@ export interface MoodAverages {
     days: number;
   };
 }
+
+export type GetMoodEntriesResponse = Omit<MoodEntry, "createdAt" | "updatedAt">;

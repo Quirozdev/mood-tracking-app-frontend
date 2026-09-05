@@ -14,6 +14,7 @@ import {
 import { MoodLogSection } from "@/features/home/widgets/MoodLogSection";
 import { LoadingFullScreen } from "@/shared/components/LoadingFullScreen";
 import { useGetAveragesByDateRange } from "@/features/mood/hooks/use-get-averages-by-date-range";
+import { useGetMoodEntries } from "@/features/mood/hooks/use-get-mood-entries";
 
 export function HomePage() {
   const [isLogMoodFormVisible, setIsLogMoodFormVisible] =
@@ -21,7 +22,7 @@ export function HomePage() {
 
   const currentDate = getCurrentDate();
 
-  const { data: moodEntry, isLoading: isLoadingMoodEntry } =
+  const { data: todayMoodEntry, isLoading: isLoadingMoodEntry } =
     useGetMoodEntryByDay(formatDateToIsoStringWithoutTime(currentDate));
 
   const { data: averages, isLoading: isLoadingAverages } =
@@ -30,15 +31,18 @@ export function HomePage() {
       formatDateToIsoStringWithoutTime(subtractDaysFromDate(currentDate, 1)),
     );
 
-  if (isLoadingMoodEntry || isLoadingAverages) {
+  const { data: moodEntries, isLoading: isLoadingMoodEntries } =
+    useGetMoodEntries();
+
+  if (isLoadingMoodEntry || isLoadingAverages || isLoadingMoodEntries) {
     return <LoadingFullScreen />;
   }
 
   return (
     <div className="flex flex-col gap-y-12 xl:gap-y-16">
       <HeroSection />
-      {moodEntry ? (
-        <MoodLogSection moodEntry={moodEntry} />
+      {todayMoodEntry ? (
+        <MoodLogSection moodEntry={todayMoodEntry} />
       ) : (
         <Button
           className="w-fit self-center"
@@ -51,11 +55,11 @@ export function HomePage() {
       )}
       <div className="flex flex-col gap-8 xl:flex-row">
         <AveragesSection
-          todayMoodEntry={moodEntry}
+          todayMoodEntry={todayMoodEntry}
           averages={averages}
           className="shrink-0"
         />
-        <TrendsSection className="flex-1" />
+        <TrendsSection moodEntries={moodEntries} className="flex-1" />
       </div>
       <Overlay
         isVisible={isLogMoodFormVisible}

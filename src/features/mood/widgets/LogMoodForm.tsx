@@ -74,6 +74,9 @@ export function LogMoodForm({ onClose }: Props) {
     queryClient.invalidateQueries({
       queryKey: ["mood-entries", day],
     });
+    queryClient.invalidateQueries({
+      queryKey: ["mood-entries"],
+    });
     onClose();
   }
 

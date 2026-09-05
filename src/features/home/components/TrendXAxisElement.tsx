@@ -1,23 +1,25 @@
 import { getMetadata } from "@/features/mood/lib/mood";
-import type { Mood, SleepHours } from "@/features/mood/model/mood.types";
+import type { GetMoodEntriesResponse } from "@/features/mood/model/mood.types";
+import {
+  getDayFromDateString,
+  getMonthNameFromDateString,
+} from "@/shared/lib/dates";
 import clsx from "clsx";
 
 interface Props {
-  mood: Mood;
-  sleepHours: SleepHours;
+  moodEntry: GetMoodEntriesResponse;
   heightPerYValue: number;
 }
 
-export function TrendXAxisElement({
-  mood,
-  sleepHours,
-  heightPerYValue,
-}: Props) {
-  const { icon, alt, colorClass } = getMetadata(mood);
+export function TrendXAxisElement({ moodEntry, heightPerYValue }: Props) {
+  const { icon, alt, colorClass } = getMetadata(moodEntry.mood);
+  const monthName = getMonthNameFromDateString(moodEntry.day);
+  const day = getDayFromDateString(moodEntry.day);
+
   const height = getHeight();
 
   function getHeight(): number {
-    switch (sleepHours) {
+    switch (moodEntry.sleepHours) {
       case "0-2_hours":
         return heightPerYValue * 1;
       case "3-4_hours":
@@ -35,7 +37,7 @@ export function TrendXAxisElement({
     <div>
       <div
         /* mb is a little patch to avoid vertical scroll to appear when horizontal one appears */
-        className="mb-0.5 flex flex-col justify-end gap-y-1.5 text-center"
+        className="mb-0.5 flex flex-col items-center justify-end gap-y-1.5 text-center"
         style={{
           minHeight: `${height}px`,
         }}
@@ -55,8 +57,8 @@ export function TrendXAxisElement({
             className="mx-auto animate-[opacity_4s_ease-in-out_1,spin_4s_ease-in-out_1] px-1.25 py-1.25"
           />
         </div>
-        <span className="text-preset-9 text-neutral-900">April</span>
-        <span className="text-preset-8 text-neutral-900">02</span>
+        <span className="text-preset-9 text-neutral-900">{monthName}</span>
+        <span className="text-preset-8 text-neutral-900">{day}</span>
       </div>
     </div>
   );
