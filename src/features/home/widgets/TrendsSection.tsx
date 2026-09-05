@@ -45,7 +45,7 @@ export function TrendsSection({ moodEntries, className }: Props) {
           <TrendYAxisElement text="3-4 hours" />
           <TrendYAxisElement text="0-2 hours" />
         </div>
-        <div className="flex scrollbar-thin scrollbar-thumb-blue-200 items-end gap-x-4 self-end overflow-x-auto xl:gap-x-4.5">
+        <div className="flex w-full scrollbar-thin scrollbar-thumb-blue-200 items-end gap-x-4 self-end overflow-x-auto xl:gap-x-4.5">
           {moodEntries.map((moodEntry) => {
             return (
               <TrendXAxisElement
