@@ -19,7 +19,7 @@ export default function AppLayout() {
 
   return (
     <div className="bg-light-gradient min-h-screen w-full">
-      <div className="mx-auto max-w-6xl px-4 py-8 md:px-8 xl:py-10">
+      <div className="mx-auto max-w-7xl px-4 py-8 md:px-8 xl:py-10">
         <AppHeader />
         <Outlet />
       </div>
