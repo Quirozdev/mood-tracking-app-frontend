@@ -6,7 +6,8 @@ import {
 import type { GetMoodEntriesResponse } from "@/features/mood/model/mood.types";
 import { useClickOutsideDetector } from "@/shared/hooks/use-click-outside-detector";
 import { useKeyDown } from "@/shared/hooks/use-key-press";
-import { useRef } from "react";
+import clsx from "clsx";
+import { useEffect, useRef, useState } from "react";
 
 interface Props {
   moodEntry: GetMoodEntriesResponse;
@@ -15,6 +16,7 @@ interface Props {
     top: number;
     left: number;
     right: number;
+    bottom: number;
   };
   onChangeVisibility: () => void;
 }
@@ -25,8 +27,13 @@ export function MoodPopOver({
   position,
   onChangeVisibility,
 }: Props) {
-  const horizontalPositioning = position.left < 200 ? "right" : "left";
+  const [height, setHeight] = useState<number>(0);
   const ref = useRef<HTMLDivElement>(null);
+
+  const horizontalPositioning = position.left < 200 ? "right" : "left";
+  const [verticalPositioning, setVerticalPositioning] = useState<
+    "top" | "bottom"
+  >("top");
   const { icon, label: moodLabel } = MOOD_OPTIONS.find(
     (moodOption) => moodOption.value === moodEntry.mood,
   )!;
@@ -36,6 +43,22 @@ export function MoodPopOver({
       return sleepHoursOption.value === moodEntry.sleepHours;
     },
   )!;
+
+  useEffect(() => {
+    if (!isPopOverVisible) return;
+
+    const height = ref.current?.getBoundingClientRect().height;
+
+    if (
+      ref.current?.getBoundingClientRect().y &&
+      height &&
+      ref.current?.getBoundingClientRect().y + height > window.innerHeight
+    ) {
+      setVerticalPositioning("bottom");
+    }
+
+    setHeight(height || 0);
+  }, [isPopOverVisible]);
 
   useClickOutsideDetector({
     ref: ref,
@@ -56,7 +79,10 @@ export function MoodPopOver({
       ref={ref}
       className="rounded-16 bg-neutral-0 absolute z-10 flex w-44 flex-col gap-y-3 border border-blue-100 p-3"
       style={{
-        top: `${position.top}px`,
+        top:
+          verticalPositioning === "bottom"
+            ? `${position.bottom - height}px`
+            : `${position.top}px`,
         left: horizontalPositioning === "left" ? `${position.left - 8}px` : "",
         right:
           horizontalPositioning === "right" ? `${position.right - 24}px` : "",
@@ -101,9 +127,19 @@ export function MoodPopOver({
         </p>
       </div>
       {horizontalPositioning === "left" ? (
-        <div className="bg-neutral-0 absolute -right-1 h-2 w-2 rotate-45 border-t border-r border-blue-100"></div>
+        <div
+          className={clsx(
+            "bg-neutral-0 absolute -right-1 h-2 w-2 rotate-45 border-t border-r border-blue-100",
+            verticalPositioning === "top" ? "top-4" : "bottom-4",
+          )}
+        ></div>
       ) : (
-        <div className="bg-neutral-0 absolute -left-1 h-2 w-2 rotate-45 border-b border-l border-blue-100"></div>
+        <div
+          className={clsx(
+            "bg-neutral-0 absolute -left-1 h-2 w-2 rotate-45 border-b border-l border-blue-100",
+            verticalPositioning === "top" ? "top-4" : "bottom-4",
+          )}
+        ></div>
       )}
     </div>
   ) : null;

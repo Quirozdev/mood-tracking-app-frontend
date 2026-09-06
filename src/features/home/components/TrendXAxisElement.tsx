@@ -20,6 +20,7 @@ export function TrendXAxisElement({ moodEntry, heightPerYValue }: Props) {
     top: 0,
     left: 0,
     right: 0,
+    bottom: 0,
   });
   const barRef = useRef<HTMLDivElement>(null);
 
@@ -51,6 +52,7 @@ export function TrendXAxisElement({ moodEntry, heightPerYValue }: Props) {
       top: rect.top + window.scrollY,
       left: rect.left + window.scrollX,
       right: window.innerWidth - rect.right,
+      bottom: rect.bottom + window.scrollY,
     });
     setIsPopoverVisible(true);
   }
