@@ -136,6 +136,7 @@ export function UpdateUserForm(props: Props) {
             placeholder="Jane Appleseed"
             invalid={!!errors.name}
             errorMessage={errors.name?.message}
+            max={255}
           />
         </div>
         <div className="flex gap-5">

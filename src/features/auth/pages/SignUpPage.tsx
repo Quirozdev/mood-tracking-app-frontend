@@ -76,6 +76,7 @@ export function SignUpPage() {
             placeholder="name@email.com"
             invalid={!!errors.email}
             errorMessage={errors.email?.message}
+            max={255}
           />
         </div>
         <div className="flex flex-col gap-2">
@@ -92,6 +93,7 @@ export function SignUpPage() {
             name="password"
             invalid={!!errors.password}
             errorMessage={errors.password?.message}
+            max={255}
           />
         </div>
       </div>
