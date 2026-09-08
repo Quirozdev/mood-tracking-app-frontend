@@ -15,6 +15,10 @@ import { MoodLogSection } from "@/features/home/widgets/MoodLogSection";
 import { LoadingFullScreen } from "@/shared/components/LoadingFullScreen";
 import { useGetAveragesByDateRange } from "@/features/mood/hooks/use-get-averages-by-date-range";
 import { useGetMoodEntries } from "@/features/mood/hooks/use-get-mood-entries";
+import type {
+  GetMoodEntriesResponse,
+  MoodAverages,
+} from "@/features/mood/model/mood.types";
 
 export function HomePage() {
   const [isLogMoodFormVisible, setIsLogMoodFormVisible] =
@@ -56,10 +60,13 @@ export function HomePage() {
       <div className="flex flex-col gap-8 xl:flex-row">
         <AveragesSection
           todayMoodEntry={todayMoodEntry}
-          averages={averages}
+          averages={averages as MoodAverages}
           className="shrink-0"
         />
-        <TrendsSection moodEntries={moodEntries} className="flex-1" />
+        <TrendsSection
+          moodEntries={moodEntries as GetMoodEntriesResponse[]}
+          className="flex-1"
+        />
       </div>
       <Overlay
         isVisible={isLogMoodFormVisible}

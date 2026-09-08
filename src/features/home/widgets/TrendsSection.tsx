@@ -49,15 +49,15 @@ export function TrendsSection({ moodEntries, className }: Props) {
     return { previousDays, nextDays };
   }
 
-  // so i can dinamycally put x axis labels at exact position and to fill each bar dynamically with correct heights instead of hardcoded ones
-  function calculateSeparationFromYAxisElements() {
-    return (
-      (ySecondAxisElementRef.current?.offsetTop || 0) -
-      (yFirstAxisElementRef.current?.offsetTop || 0)
-    );
-  }
-
   useEffect(() => {
+    // so i can dinamycally put x axis labels at exact position and to fill each bar dynamically with correct heights instead of hardcoded ones
+    function calculateSeparationFromYAxisElements() {
+      return (
+        (ySecondAxisElementRef.current?.offsetTop || 0) -
+        (yFirstAxisElementRef.current?.offsetTop || 0)
+      );
+    }
+
     setSeparation(calculateSeparationFromYAxisElements());
   }, [yFirstAxisElementRef, ySecondAxisElementRef]);
 
