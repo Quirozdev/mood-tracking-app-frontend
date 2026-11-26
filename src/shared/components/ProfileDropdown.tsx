@@ -13,6 +13,7 @@ import { useLogout } from "@/features/auth/hooks/use-logout";
 import { removeItem } from "@/shared/lib/local-storage";
 import { ACCESS_TOKEN_KEY } from "@/features/auth/model/auth.types";
 import { useNavigate } from "react-router";
+import { queryClient } from "@/api/query-client";
 
 export function ProfileDropdown() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -41,6 +42,7 @@ export function ProfileDropdown() {
   async function onLogout() {
     await logOut();
     removeItem(ACCESS_TOKEN_KEY);
+    queryClient.clear();
     navigate("/auth/login");
   }
 
