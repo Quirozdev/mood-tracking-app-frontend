@@ -9,16 +9,15 @@ import { useGetMoodEntryByDay } from "@/features/mood/hooks/use-get-mood-entry-b
 import {
   formatDateToIsoStringWithoutTime,
   getCurrentDate,
-  subtractDaysFromDate,
 } from "@/shared/lib/dates";
 import { MoodLogSection } from "@/features/home/widgets/MoodLogSection";
 import { LoadingFullScreen } from "@/shared/components/LoadingFullScreen";
-import { useGetAveragesByDateRange } from "@/features/mood/hooks/use-get-averages-by-date-range";
 import { useGetMoodEntries } from "@/features/mood/hooks/use-get-mood-entries";
 import type {
   GetMoodEntriesResponse,
   MoodAverages,
 } from "@/features/mood/model/mood.types";
+import { useGetAveragesByLastCheckIns } from "@/features/mood/hooks/use-get-averages-by-last-check-ins";
 
 export function HomePage() {
   const [isLogMoodFormVisible, setIsLogMoodFormVisible] =
@@ -30,10 +29,7 @@ export function HomePage() {
     useGetMoodEntryByDay(formatDateToIsoStringWithoutTime(currentDate));
 
   const { data: averages, isLoading: isLoadingAverages } =
-    useGetAveragesByDateRange(
-      formatDateToIsoStringWithoutTime(subtractDaysFromDate(currentDate, 5)),
-      formatDateToIsoStringWithoutTime(subtractDaysFromDate(currentDate, 1)),
-    );
+    useGetAveragesByLastCheckIns(5);
 
   const { data: moodEntries, isLoading: isLoadingMoodEntries } =
     useGetMoodEntries();
@@ -59,7 +55,6 @@ export function HomePage() {
       )}
       <div className="flex flex-col gap-8 xl:flex-row">
         <AveragesSection
-          todayMoodEntry={todayMoodEntry}
           averages={averages as MoodAverages}
           className="shrink-0"
         />

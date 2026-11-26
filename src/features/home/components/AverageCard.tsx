@@ -1,12 +1,8 @@
 import BgPatternAverages from "@/assets/images/bg-pattern-averages.svg";
 import { EmptyStateAverageCard } from "@/features/home/components/EmptyStateAverageCard";
 import { getMetadata } from "@/features/mood/lib/mood";
-import type { MoodAverages, MoodEntry } from "@/features/mood/model/mood.types";
-import {
-  moodToValue,
-  SLEEP_HOURS_OPTIONS,
-  sleepHoursToValue,
-} from "@/features/mood/model/mood.constants";
+import type { MoodAverages } from "@/features/mood/model/mood.types";
+import { SLEEP_HOURS_OPTIONS } from "@/features/mood/model/mood.constants";
 import clsx from "clsx";
 import { SameTrendArrow } from "@/assets/icons/SameTrendArrow";
 import { IncreasedTrendArrow } from "@/assets/icons/IncreasedTrendArrow";
@@ -14,7 +10,6 @@ import { DecreasedTrendArrow } from "@/assets/icons/DecreasedTrendArrow";
 import { SleepIcon } from "@/assets/icons/SleepIcon";
 
 type Props = {
-  todayMoodEntry?: MoodEntry;
   title: string;
   emptyStateTitle: string;
   emptyStateText: string;
@@ -30,7 +25,7 @@ type Props = {
 );
 
 export function AverageCard({ ...props }: Props) {
-  if (props.data.days === 0) {
+  if (props.data.last.days < 5) {
     return <EmptyStateAverageCard type={props.type} />;
   }
 
@@ -39,56 +34,48 @@ export function AverageCard({ ...props }: Props) {
   const { component, text } = getTrend();
 
   function getTrend() {
+    if (props.data.previous.days < 5) {
+      return {
+        component: null,
+        text: `Log at least ${5 - props.data.previous.days} more check-ins to compare your latest five check-ins with the five before them.`,
+      };
+    }
+
     switch (props.type) {
       case "mood": {
-        if (!props.todayMoodEntry?.mood) {
-          return {
-            component: null,
-            text: "Please log your mood today to compare it to average",
-          };
-        }
-        const moodValue = moodToValue[props.todayMoodEntry?.mood];
-        if (moodValue > props.data.average) {
+        if (props.data.last.average > props.data.previous.average) {
           return {
             component: <IncreasedTrendArrow fill="var(--color-neutral-900)" />,
-            text: `Increase from the previous ${props.data.days} check-ins`,
+            text: `Increase from the previous ${props.data.previous.days} check-ins`,
           };
-        } else if (moodValue < props.data.average) {
+        } else if (props.data.last.average < props.data.previous.average) {
           return {
             component: <DecreasedTrendArrow fill="var(--color-neutral-900)" />,
-            text: `Decrease from the previous ${props.data.days} check-ins`,
+            text: `Decrease from the previous ${props.data.previous.days} check-ins`,
           };
         } else {
           return {
             component: <SameTrendArrow fill="var(--color-neutral-900)" />,
-            text: `Same as the previous ${props.data.days} check-ins`,
+            text: `Same as the previous ${props.data.previous.days} check-ins`,
           };
         }
       }
 
       case "sleepHours": {
-        if (!props.todayMoodEntry?.sleepHours) {
-          return {
-            component: null,
-            text: "Please log your mood today to compare it to average",
-          };
-        }
-        const sleepHoursValue =
-          sleepHoursToValue[props.todayMoodEntry.sleepHours];
-        if (sleepHoursValue > props.data.average) {
+        if (props.data.last.average > props.data.previous.average) {
           return {
             component: <IncreasedTrendArrow fill="var(--color-neutral-0)" />,
-            text: `Increase from the previous ${props.data.days} check-ins`,
+            text: `Increase from the previous ${props.data.previous.days} check-ins`,
           };
-        } else if (sleepHoursValue < props.data.average) {
+        } else if (props.data.last.average < props.data.previous.average) {
           return {
             component: <DecreasedTrendArrow fill="var(--color-neutral-0)" />,
-            text: `Decrease from the previous ${props.data.days} check-ins`,
+            text: `Decrease from the previous ${props.data.previous.days} check-ins`,
           };
         } else {
           return {
             component: <SameTrendArrow fill="var(--color-neutral-0)" />,
-            text: `Same as the previous ${props.data.days} check-ins`,
+            text: `Same as the previous ${props.data.last.days} check-ins`,
           };
         }
       }
@@ -102,12 +89,13 @@ export function AverageCard({ ...props }: Props) {
   } {
     switch (props.type) {
       case "mood":
-        return getMetadata(props.data.value);
+        return getMetadata(props.data.last.value);
 
       case "sleepHours":
         return {
           alt: SLEEP_HOURS_OPTIONS.find(
-            (sleepHoursOption) => sleepHoursOption.value === props.data.value,
+            (sleepHoursOption) =>
+              sleepHoursOption.value === props.data.last.value,
           )?.label as string,
           colorClass: "bg-blue-600",
           icon: null,
@@ -121,7 +109,7 @@ export function AverageCard({ ...props }: Props) {
         <span className="text-preset-5 text-neutral-900">
           {props.title} {""}
           <span className="text-preset-7 text-neutral-600">
-            Last {props.data.days} Check-ins
+            Last {props.data.last.days} Check-ins
           </span>
         </span>
         <div

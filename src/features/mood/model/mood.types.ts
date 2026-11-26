@@ -23,14 +23,28 @@ export interface LogMoodInput {
 
 export interface MoodAverages {
   mood: {
-    value: Mood;
-    average: number;
-    days: number;
+    last: {
+      value: Mood;
+      average: number;
+      days: number;
+    };
+    previous: {
+      value: Mood;
+      average: number;
+      days: number;
+    };
   };
   sleepHours: {
-    value: SleepHours;
-    average: number;
-    days: number;
+    last: {
+      value: SleepHours;
+      average: number;
+      days: number;
+    };
+    previous: {
+      value: SleepHours;
+      average: number;
+      days: number;
+    };
   };
 }
 

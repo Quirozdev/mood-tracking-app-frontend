@@ -1,11 +1,10 @@
 import { api } from "@/api/client";
 import type { MoodAverages } from "@/features/mood/model/mood.types";
 
-export async function getAveragesByDateRange(from: string, to: string) {
+export async function getAveragesByLastCheckIns(lastCheckIns: number) {
   const { data } = await api.get<MoodAverages>("/moods/averages", {
     params: {
-      from,
-      to,
+      lastCheckIns,
     },
   });
   return data;

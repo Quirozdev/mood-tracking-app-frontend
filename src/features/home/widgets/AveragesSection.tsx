@@ -1,17 +1,12 @@
 import { AverageCard } from "@/features/home/components/AverageCard";
-import type { MoodAverages, MoodEntry } from "@/features/mood/model/mood.types";
+import type { MoodAverages } from "@/features/mood/model/mood.types";
 import clsx from "clsx";
 
 interface Props extends React.ComponentPropsWithRef<"section"> {
-  todayMoodEntry?: MoodEntry;
   averages: MoodAverages;
 }
 
-export function AveragesSection({
-  averages,
-  todayMoodEntry,
-  className,
-}: Props) {
+export function AveragesSection({ averages, className }: Props) {
   return (
     <section
       className={clsx(
@@ -21,7 +16,6 @@ export function AveragesSection({
     >
       <AverageCard
         type="mood"
-        todayMoodEntry={todayMoodEntry}
         data={averages.mood}
         title="Average Mood"
         emptyStateTitle="Keep tracking!"
@@ -29,7 +23,6 @@ export function AveragesSection({
       />
       <AverageCard
         type="sleepHours"
-        todayMoodEntry={todayMoodEntry}
         data={averages.sleepHours}
         title="Average Sleep"
         emptyStateTitle="Not enough data yet!"
