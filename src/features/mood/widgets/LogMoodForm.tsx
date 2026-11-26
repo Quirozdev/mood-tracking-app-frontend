@@ -22,7 +22,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import type { MoodEntry } from "@/features/mood/model/mood.types";
 
 interface Props {
-  initialValues?: MoodEntry;
+  initialValues?: Partial<MoodEntry>;
   onClose: () => void;
 }
 
@@ -34,8 +34,8 @@ export function LogMoodForm({ initialValues, onClose }: Props) {
     mode: "onChange",
     defaultValues: {
       mood: initialValues?.mood,
-      feelings: initialValues ? initialValues.feelings : [],
-      journalEntry: initialValues ? initialValues.journalEntry : "",
+      feelings: initialValues?.feelings ?? [],
+      journalEntry: initialValues?.journalEntry ?? "",
       sleepHours: initialValues?.sleepHours,
     },
   });
@@ -62,10 +62,11 @@ export function LogMoodForm({ initialValues, onClose }: Props) {
   const currentStepError = errors[stepsMapping[step]]?.message;
 
   async function onSubmit(data: z.infer<typeof logMoodSchema>) {
-    const day = formatDateToIsoStringWithoutTime(getCurrentDate());
+    const day =
+      initialValues?.day ?? formatDateToIsoStringWithoutTime(getCurrentDate());
 
     await logMood({
-      day: formatDateToIsoStringWithoutTime(getCurrentDate()),
+      day,
       logMoodInput: {
         mood: data.mood,
         feelings: data.feelings,
