@@ -41,18 +41,15 @@ export function HomePage() {
   return (
     <div className="flex flex-col gap-y-12 xl:gap-y-16">
       <HeroSection />
-      {todayMoodEntry ? (
-        <MoodLogSection moodEntry={todayMoodEntry} />
-      ) : (
-        <Button
-          className="w-fit self-center"
-          onClick={() => {
-            setIsLogMoodFormVisible(true);
-          }}
-        >
-          Log today's mood
-        </Button>
-      )}
+      <Button
+        className="w-fit self-center"
+        onClick={() => {
+          setIsLogMoodFormVisible(true);
+        }}
+      >
+        {todayMoodEntry ? "Log mood" : "Log today's mood"}
+      </Button>
+      {todayMoodEntry && <MoodLogSection moodEntry={todayMoodEntry} />}
       <div className="flex flex-col gap-8 xl:flex-row">
         <AveragesSection
           averages={averages as MoodAverages}
@@ -68,7 +65,10 @@ export function HomePage() {
         onVisibilityChange={setIsLogMoodFormVisible}
       >
         <div className="mx-auto max-w-xl">
-          <LogMoodForm onClose={() => setIsLogMoodFormVisible(false)} />
+          <LogMoodForm
+            initialValues={todayMoodEntry}
+            onClose={() => setIsLogMoodFormVisible(false)}
+          />
         </div>
       </Overlay>
     </div>

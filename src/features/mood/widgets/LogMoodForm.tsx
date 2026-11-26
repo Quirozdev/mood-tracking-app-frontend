@@ -19,20 +19,24 @@ import {
   getCurrentDate,
 } from "@/shared/lib/dates";
 import { useQueryClient } from "@tanstack/react-query";
+import type { MoodEntry } from "@/features/mood/model/mood.types";
 
 interface Props {
+  initialValues?: MoodEntry;
   onClose: () => void;
 }
 
-export function LogMoodForm({ onClose }: Props) {
+export function LogMoodForm({ initialValues, onClose }: Props) {
   const [step, setCurrentStep] = useState<number>(1);
 
   const methods = useForm<z.infer<typeof logMoodSchema>>({
     resolver: zodResolver(logMoodSchema),
     mode: "onChange",
     defaultValues: {
-      feelings: [],
-      journalEntry: "",
+      mood: initialValues?.mood,
+      feelings: initialValues ? initialValues.feelings : [],
+      journalEntry: initialValues ? initialValues.journalEntry : "",
+      sleepHours: initialValues?.sleepHours,
     },
   });
 
