@@ -67,7 +67,9 @@
   );
 
   /* Typography */
-  --default-font-family: "RedditSans", sans-serif;
+  --font-reddit-sans: "RedditSans", sans-serif;
+
+  --default-font-family: var(--font-reddit-sans);
 
   --text-preset-1: 52px;
   --text-preset-1--line-height: 140%;

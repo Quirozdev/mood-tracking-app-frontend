@@ -62,12 +62,22 @@ export function MoodCalendar({ onPick }: Props) {
               onPick(formatDateToIsoStringWithoutTime(value?.toDate()));
             }
           }}
-
           slotProps={{
             day: { highlightedDays } as unknown as {
               day: number;
               mood: Mood;
             }[],
+            yearButton: {
+              sx: {
+                fontFamily: "var(--font-reddit-sans)",
+              },
+            },
+          }}
+          sx={{
+            "& .MuiPickersCalendarHeader-label, & .MuiDayCalendar-weekDayLabel, & .MuiPickerDay-root":
+              {
+                fontFamily: "var(--font-reddit-sans)",
+              },
           }}
         />
       </LocalizationProvider>
