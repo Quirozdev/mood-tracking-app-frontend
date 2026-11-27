@@ -87,7 +87,7 @@ export function LogMoodForm({ initialValues, onClose }: Props) {
 
   return (
     <FormProvider {...methods}>
-      <FormContainer onSubmit={handleSubmit(onSubmit)}>
+      <FormContainer onSubmit={handleSubmit(onSubmit)} className="w-full">
         <div className="flex flex-col gap-y-6 md:gap-y-8">
           <div className="flex flex-col gap-1">
             <button
