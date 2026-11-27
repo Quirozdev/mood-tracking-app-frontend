@@ -18,6 +18,7 @@ import type {
   MoodAverages,
 } from "@/features/mood/model/mood.types";
 import { useGetAveragesByLastCheckIns } from "@/features/mood/hooks/use-get-averages-by-last-check-ins";
+import { LogMoodOnAnyDay } from "@/features/mood/widgets/LogMoodOnAnyDay";
 
 export function HomePage() {
   const [isLogMoodFormVisible, setIsLogMoodFormVisible] =
@@ -41,9 +42,8 @@ export function HomePage() {
   return (
     <div className="flex flex-col gap-y-12 xl:gap-y-16">
       <HeroSection />
-      {todayMoodEntry ? (
-        <MoodLogSection moodEntry={todayMoodEntry} />
-      ) : (
+
+      {!todayMoodEntry && (
         <Button
           className="w-fit self-center"
           onClick={() => {
@@ -52,6 +52,12 @@ export function HomePage() {
         >
           Log today's mood
         </Button>
+      )}
+      {todayMoodEntry && (
+        <>
+          <LogMoodOnAnyDay />
+          <MoodLogSection moodEntry={todayMoodEntry} />
+        </>
       )}
       <div className="flex flex-col gap-8 xl:flex-row">
         <AveragesSection
@@ -68,7 +74,10 @@ export function HomePage() {
         onVisibilityChange={setIsLogMoodFormVisible}
       >
         <div className="mx-auto max-w-xl">
-          <LogMoodForm onClose={() => setIsLogMoodFormVisible(false)} />
+          <LogMoodForm
+            initialValues={todayMoodEntry}
+            onClose={() => setIsLogMoodFormVisible(false)}
+          />
         </div>
       </Overlay>
     </div>

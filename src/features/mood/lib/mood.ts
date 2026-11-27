@@ -1,4 +1,7 @@
-import { MOOD_QUOTES } from "@/features/mood/model/mood.constants";
+import {
+  MOOD_OPTIONS,
+  MOOD_QUOTES,
+} from "@/features/mood/model/mood.constants";
 import type { Mood } from "@/features/mood/model/mood.types";
 import VerySadFaceWhiteIcon from "@/assets/images/icon-very-sad-white.svg";
 import SadFaceWhiteIcon from "@/assets/images/icon-sad-white.svg";
@@ -48,4 +51,8 @@ export function getMetadata(mood: Mood): {
         colorClass: "bg-amber-300",
       };
   }
+}
+
+export function getMoodOptionData(mood: Mood) {
+  return MOOD_OPTIONS.find((moodOption) => moodOption.value === mood);
 }

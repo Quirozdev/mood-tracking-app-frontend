@@ -6,6 +6,7 @@ import {
 import * as z from "zod";
 
 export const logMoodSchema = z.object({
+  day: z.iso.date({ error: "Please provide a valid date" }),
   mood: z.enum(
     MOOD_OPTIONS.map((moodOption) => moodOption.value),
     {

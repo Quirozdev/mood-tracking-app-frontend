@@ -19,20 +19,27 @@ import {
   getCurrentDate,
 } from "@/shared/lib/dates";
 import { useQueryClient } from "@tanstack/react-query";
+import type { MoodEntry } from "@/features/mood/model/mood.types";
 
 interface Props {
+  initialValues?: Partial<MoodEntry>;
   onClose: () => void;
 }
 
-export function LogMoodForm({ onClose }: Props) {
+export function LogMoodForm({ initialValues, onClose }: Props) {
   const [step, setCurrentStep] = useState<number>(1);
 
   const methods = useForm<z.infer<typeof logMoodSchema>>({
     resolver: zodResolver(logMoodSchema),
     mode: "onChange",
     defaultValues: {
-      feelings: [],
-      journalEntry: "",
+      day:
+        initialValues?.day ??
+        formatDateToIsoStringWithoutTime(getCurrentDate()),
+      mood: initialValues?.mood,
+      feelings: initialValues?.feelings ?? [],
+      journalEntry: initialValues?.journalEntry ?? "",
+      sleepHours: initialValues?.sleepHours,
     },
   });
 
@@ -58,10 +65,8 @@ export function LogMoodForm({ onClose }: Props) {
   const currentStepError = errors[stepsMapping[step]]?.message;
 
   async function onSubmit(data: z.infer<typeof logMoodSchema>) {
-    const day = formatDateToIsoStringWithoutTime(getCurrentDate());
-
     await logMood({
-      day: formatDateToIsoStringWithoutTime(getCurrentDate()),
+      day: data.day,
       logMoodInput: {
         mood: data.mood,
         feelings: data.feelings,
@@ -72,7 +77,7 @@ export function LogMoodForm({ onClose }: Props) {
 
     showToast("success", "Mood logged!");
     queryClient.invalidateQueries({
-      queryKey: ["mood-entries", day],
+      queryKey: ["mood-entries", data.day],
     });
     queryClient.invalidateQueries({
       queryKey: ["mood-entries"],
@@ -82,7 +87,7 @@ export function LogMoodForm({ onClose }: Props) {
 
   return (
     <FormProvider {...methods}>
-      <FormContainer onSubmit={handleSubmit(onSubmit)}>
+      <FormContainer onSubmit={handleSubmit(onSubmit)} className="w-full">
         <div className="flex flex-col gap-y-6 md:gap-y-8">
           <div className="flex flex-col gap-1">
             <button
