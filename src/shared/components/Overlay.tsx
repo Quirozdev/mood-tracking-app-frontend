@@ -1,5 +1,6 @@
 import { useClickOutsideDetector } from "@/shared/hooks/use-click-outside-detector";
 import { useKeyDown } from "@/shared/hooks/use-key-press";
+import { cn } from "@/shared/utils/cn";
 import type React from "react";
 import { useRef } from "react";
 
@@ -8,7 +9,12 @@ interface Props extends React.ComponentPropsWithRef<"div"> {
   onVisibilityChange: (isVisible: boolean) => void;
 }
 
-export function Overlay({ children, isVisible, onVisibilityChange }: Props) {
+export function Overlay({
+  children,
+  isVisible,
+  onVisibilityChange,
+  className,
+}: Props) {
   const ref = useRef<HTMLDivElement>(null);
 
   useKeyDown({
@@ -34,7 +40,10 @@ export function Overlay({ children, isVisible, onVisibilityChange }: Props) {
         <div className="fixed inset-0 z-10 min-h-screen w-full bg-neutral-900 opacity-70"></div>
         <div
           ref={ref}
-          className="fixed top-20 left-1/2 z-20 w-full -translate-x-1/2"
+          className={cn(
+            "fixed top-20 left-1/2 z-20 w-full -translate-x-1/2",
+            className,
+          )}
           onClick={(e) => {
             // because i put w-full, when clicking at the sides of children, that will count as still
             // clicking this div container, so this is a little patching for that case

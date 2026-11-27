@@ -1,6 +1,7 @@
-import { MoodCalendar } from "@/features/mood/components/MoodCalendar";
+import { LogDayPickerContainer } from "@/features/mood/widgets/LogDayPickerContainer";
 import { PrefilledLogForm } from "@/features/mood/widgets/PrefilledLogForm";
 import { Button } from "@/shared/components/Button";
+import { Overlay } from "@/shared/components/Overlay";
 import { useState } from "react";
 
 export function LogMoodOnAnyDay() {
@@ -9,7 +10,7 @@ export function LogMoodOnAnyDay() {
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
   return (
-    <>
+    <div className="flex items-center justify-center">
       <Button
         className="w-fit self-center"
         onClick={() => {
@@ -18,14 +19,19 @@ export function LogMoodOnAnyDay() {
       >
         Log mood
       </Button>
-      {isCalendarVisible && (
-        <MoodCalendar
+      <Overlay
+        isVisible={isCalendarVisible}
+        onVisibilityChange={setIsCalendarVisible}
+        className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+      >
+        <LogDayPickerContainer
           onPick={(date) => {
             setSelectedDate(date);
+            setIsCalendarVisible(false);
             setIsLogMoodFormVisible(true);
           }}
         />
-      )}
+      </Overlay>
       {selectedDate && (
         <PrefilledLogForm
           date={selectedDate}
@@ -33,6 +39,6 @@ export function LogMoodOnAnyDay() {
           onVisibilityChange={setIsLogMoodFormVisible}
         />
       )}
-    </>
+    </div>
   );
 }
