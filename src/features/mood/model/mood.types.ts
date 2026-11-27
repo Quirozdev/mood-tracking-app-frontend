@@ -14,6 +14,11 @@ export interface MoodEntry {
   updatedAt: string | null;
 }
 
+export interface GetMoodEntriesInput {
+  from?: string;
+  to?: string;
+}
+
 export interface LogMoodInput {
   mood: Mood;
   feelings: string[];

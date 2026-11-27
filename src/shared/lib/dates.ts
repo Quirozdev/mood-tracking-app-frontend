@@ -98,3 +98,13 @@ export function getNextDaysInIsoStringFromNow(
 export function formatDateString(date: string, format: string) {
   return dayjs(date).format(format);
 }
+
+export function getStartAndEndDateOfDateMonth(referenceDate: string) {
+  const startOfMonth = formatDateToIsoStringWithoutTime(
+    dayjs(referenceDate).startOf("month").toDate(),
+  );
+  const endOfMonth = formatDateToIsoStringWithoutTime(
+    dayjs(referenceDate).endOf("month").toDate(),
+  );
+  return { startOfMonth, endOfMonth };
+}

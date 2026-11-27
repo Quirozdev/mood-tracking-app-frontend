@@ -1,4 +1,4 @@
-import { MoodCalendar } from "@/features/mood/components/MoodCalendar";
+import { MoodCalendar } from "@/features/mood/components/mood-calendar/MoodCalendar";
 
 interface Props {
   onPick: (date: string) => void;
