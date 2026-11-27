@@ -33,6 +33,9 @@ export function LogMoodForm({ initialValues, onClose }: Props) {
     resolver: zodResolver(logMoodSchema),
     mode: "onChange",
     defaultValues: {
+      day:
+        initialValues?.day ??
+        formatDateToIsoStringWithoutTime(getCurrentDate()),
       mood: initialValues?.mood,
       feelings: initialValues?.feelings ?? [],
       journalEntry: initialValues?.journalEntry ?? "",
@@ -62,11 +65,8 @@ export function LogMoodForm({ initialValues, onClose }: Props) {
   const currentStepError = errors[stepsMapping[step]]?.message;
 
   async function onSubmit(data: z.infer<typeof logMoodSchema>) {
-    const day =
-      initialValues?.day ?? formatDateToIsoStringWithoutTime(getCurrentDate());
-
     await logMood({
-      day,
+      day: data.day,
       logMoodInput: {
         mood: data.mood,
         feelings: data.feelings,
@@ -77,7 +77,7 @@ export function LogMoodForm({ initialValues, onClose }: Props) {
 
     showToast("success", "Mood logged!");
     queryClient.invalidateQueries({
-      queryKey: ["mood-entries", day],
+      queryKey: ["mood-entries", data.day],
     });
     queryClient.invalidateQueries({
       queryKey: ["mood-entries"],

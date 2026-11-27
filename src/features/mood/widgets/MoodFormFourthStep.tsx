@@ -1,16 +1,28 @@
 import { SLEEP_HOURS_OPTIONS } from "@/features/mood/model/mood.constants";
 import type { logMoodSchema } from "@/features/mood/schemas/log-mood.schema";
 import { RadioInput } from "@/shared/components/RadioInput";
+import {
+  formatDateString,
+  formatDateToIsoStringWithoutTime,
+  getCurrentDate,
+} from "@/shared/lib/dates";
 import { Controller, useFormContext } from "react-hook-form";
 import type z from "zod";
 
 export function MoodFormFourthStep() {
-  const { control } = useFormContext<z.infer<typeof logMoodSchema>>();
+  const { control, getValues } =
+    useFormContext<z.infer<typeof logMoodSchema>>();
+
+  const { day } = getValues();
+
+  const isToday = day === formatDateToIsoStringWithoutTime(getCurrentDate());
 
   return (
     <div className="flex flex-col gap-y-6 md:gap-y-8">
       <h4 className="text-preset-3-mobile md:text-preset-3 text-neutral-900">
-        How many hours did you sleep last night?
+        {isToday
+          ? "How many hours did you sleep last night?"
+          : `How many hours did you sleep on ${formatDateString(day, "ll")}?`}
       </h4>
       <Controller
         name="sleepHours"

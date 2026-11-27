@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 export const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 
 export const MONTHS: Record<number, string> = {
@@ -91,4 +93,8 @@ export function getNextDaysInIsoStringFromNow(
     );
   }
   return nextDates;
+}
+
+export function formatDateString(date: string, format: string) {
+  return dayjs(date).format(format);
 }
